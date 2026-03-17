@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalog | MM 3D Printing</title>
+  <!-- Favicon / Tab Icon -->
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <style>
+    :root {
+      --primary-color: #1a1a1a;
+      --accent-green: #25D366;
+      --accent-blue: #3b82f6;
+      --text-gray: #666;
+      --bg-gray: #f3f4f6;
+      --ribbon-color: #ef4444;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-gray);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      line-height: 1.5;
+      transition: direction 0.3s ease;
+    }
+
+    body.rtl {
+      direction: rtl;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: white;
+      padding: 5px;
+      border-radius: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 5px;
+    }
+
+    body.rtl .lang-toggle {
+      right: auto;
+      left: 20px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin: 0;
+      color: var(--primary-color);
+    }
+
+    .slogan {
+      color: var(--text-gray);
+      font-style: italic;
+      margin-top: 5px;
+    }
+
+    .contact-bar {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      background: white;
+      padding: 10px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+
+    .category-section { margin-bottom: 60px; }
+    .category-title {
+      font-size: 1.8rem;
+      border-left: 5px solid var(--primary-color);
+      padding-left: 15px;
+      margin-bottom: 30px;
+      color: var(--primary-color);
+    }
+
+    body.rtl .category-title {
+      border-left: none;
+      border-right: 5px solid var(--primary-color);
+      padding-left: 0;
+      padding-right: 15px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s;
+      position: relative;
+    }
+
+    .product-card:hover { transform: translateY(-5px); }
+
+    .ribbon {
+      position: absolute;
+      top: 10px;
+      left: -5px;
+      background: var(--ribbon-color);
+      color: white;
+      padding: 5px 15px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    
+    body.rtl .ribbon {
+        left: auto;
+        right: -5px;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .product-details {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      min-height: 2.6em;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      color: #059669;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .btn-group { display: flex; flex-direction: column; gap: 8px; }
+    .btn {
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .btn-whatsapp { background: var(--accent-green); color: white; }
+    .btn-email { background: var(--accent-blue); color: white; }
+
+    footer { text-align: center; padding: 40px; color: var(--text-gray); border-top: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
+  <button class="lang-btn" id="btn-he" onclick="setLanguage('he')">עב</button>
+</div>
+
+<div class="container">
+  <div class="header">
+    <img src="images/logo.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/150?text=MM+3D'">
+    <h1>MM 3D Printing</h1>
+    <p class="slogan" id="slogan">Let's make the impossible possible</p>
+  </div>
+
+  <div class="contact-bar">
+    <a href="https://wa.me/972586780680" class="contact-link" id="link-wa">📱 WhatsApp</a>
+    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link" id="link-email">✉ Email</a>
+    <a href="tel:0586780680" class="contact-link">📞 058-678-0680</a>
+  </div>
+
+  <div id="catalog-container"></div>
+
+  <footer>
+    <p id="footer-text">&copy; 2026 MM 3D Printing. All Rights Reserved.</p>
+  </footer>
+</div>
+
+<script>
+let currentLang = 'en';
+
+const translations = {
+  en: {
+    slogan: "Let's make the impossible possible",
+    orderWa: "Order via WhatsApp",
+    orderEmail: "Order via Email",
+    waMsg: "Hi! I am interested in ordering the ",
+    emailSub: "Order Inquiry: ",
+    footer: "© 2026 MM 3D Printing. All Rights Reserved.",
+    noImg: "No Image",
+    tbd: "Price on Request",
+    fourPack: "4 Pack"
+  },
+  he: {
+    slogan: "בואו נהפוך את הבלתי אפשרי לאפשרי",
+    orderWa: "הזמנה בוואטסאפ",
+    orderEmail: "הזמנה במייל",
+    waMsg: "שלום! אני מעוניין להזמין את ",
+    emailSub: "בירור הזמנה: ",
+    footer: "© 2026 MM 3D Printing. כל הזכויות שמורות.",
+    noImg: "אין תמונה",
+    tbd: "מחיר לפי דרישה",
+    fourPack: "מארז רביעייה"
+  }
+};
+
+const categories = [
+  { id: "Pesach", en: "Pesach", he: "פסח" },
+  { id: "Back to School", en: "Back to School", he: "חזרה ללימודים" },
+  { id: "Book Accessories", en: "Book Accessories", he: "אביזרי ספרים" },
+  { id: "Fidget Toys", en: "Fidget Toys", he: "צעצועי פידג'ט" },
+  { id: "Tefillin Boxes", en: "Tefillin Boxes", he: "בתי תפילין" },
+  { id: "Tzedakah Box", en: "Tzedakah Box", he: "קופות צדקה" },
+  { id: "Travel Essentials", en: "Travel Essentials", he: "ציוד למטיילים" },
+  { id: "Tools & Accessories", en: "Tools & Accessories", he: "כלים ואביזרים" },
+  { id: "Keyrings", en: "Keyrings", he: "מחזיקי מפתחות" },
+  { id: "Shopping Essentials", en: "Shopping Essentials", he: "מוצרי קניות" }
+];
+
+const products = [
+  { nameEn: "Chametz-Free sign", nameHe: "חדר זה נקי לפסח", price: "120.00", cat: "Pesach", ribbon: true },
+  { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach" },
+  { nameEn: "Checklist", nameHe: "צ'ק ליסט", price: "35.00", cat: "Back to School" },
+  { nameEn: "Phone Stand with a Charging Slot", nameHe: "מעמד לטלפון עם חריץ טעינה", price: "30.00", cat: "Back to School" },
+  { nameEn: "Sticky Note Holder", nameHe: "מעמד לדפי ממו", price: "35.00", cat: "Back to School" },
+  { nameEn: "Elegant book stand", nameHe: "מעמד ספרים אלגנטי", price: "35.00", cat: "Book Accessories" },
+  { nameEn: "Foldable Book Stand", nameHe: "מעמד ספרים מתקפל", price: "35.00", cat: "Book Accessories" },
+  { nameEn: "Simple Book End stop (2 pack)", nameHe: "מעצורי ספרים פשוטים (זוג)", price: "25.00", cat: "Book Accessories" },
+  { nameEn: "The book bookmark", nameHe: "סימניית ספר מיוחדת", price: "5.00", cat: "Book Accessories" },
+  { nameEn: "Zipper bookmark", nameHe: "סימניית רוכסן", price: "15.00", cat: "Book Accessories" },
+  { nameEn: "book bookmark", nameHe: "סימניייה לספר", price: "10.00", cat: "Book Accessories" },
+  { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אמוג'י", price: "10.00", cat: "Fidget Toys" },
+  { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "Fidget Toys" },
+  { nameEn: "Fidget star", price: "15.00", nameHe: "כוכב פידג'ט", cat: "Fidget Toys" },
+  { nameEn: "Flexi Rex", price: "15.00", nameHe: "דינו-טיק", cat: "Fidget Toys" },
+  { nameEn: "Infinity Fidget Cube", nameHe: "קובית אינסוף", price: "15.00", cat: "Fidget Toys" },
+  { nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בצורת בית המקדש", price: "60.00", cat: "Tefillin Boxes" },
+  { nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: "77.00", cat: "Tzedakah Box" },
+  { nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: "30.00", cat: "Tzedakah Box" },
+  { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעונית", price: "35.00", cat: "Tzedakah Box" },
+  { nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: "50.00", cat: "Tzedakah Box" },
+  { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה מחליק", price: "30.00", cat: "Tzedakah Box" },
+  { nameEn: "twist tzedakah box", nameHe: "קופת צדקה טוויסט", price: "40.00", cat: "Tzedakah Box" },
+  { nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי לנסיעות", price: "25.00", cat: "Travel Essentials" },
+  { nameEn: "Earphone case & phone stand", nameHe: "נרתיק אוזניות ומעמד לטלפון", price: "20.00", cat: "Travel Essentials" },
+  { nameEn: "Modular Tie Box with Travel Lid", nameHe: "קופסת עניבות מודולרית", price: "40.00", cat: "Travel Essentials" },
+  { nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים OralB", price: "15.00", cat: "Travel Essentials" },
+  { nameEn: "Q-tip - travel box", nameHe: "קופסת מקלוני אוזניים לנסיעה", price: "25.00", cat: "Travel Essentials" },
+  { nameEn: "Travel cutlery box", nameHe: "קופסת סכו\"ם לנסיעות", price: "35.00", cat: "Travel Essentials" },
+  { nameEn: "Universal card case", nameHe: "נרתיק כרטיסים אוניברסלי", price: "30.00", cat: "Travel Essentials" },
+  { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "Tools & Accessories" },
+  { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק משאבת הזנה אינפיניטי", price: "60.00", cat: "Tools & Accessories" },
+  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Tools & Accessories" },
+  { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "Keyrings" },
+  { nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: "10.00", cat: "Keyrings" },
+  { nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: "20.00", cat: "Keyrings" },
+  { nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: "15.00", cat: "Keyrings" },
+  { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping Essentials" },
+  { nameEn: "Car Seat Hook", nameHe: "וו למושב הרכב", price: "25.00", cat: "Shopping Essentials" },
+  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלה", price: "10.00", cat: "Shopping Essentials" }
+];
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.body.className = lang === 'he' ? 'rtl' : '';
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-he').classList.toggle('active', lang === 'he');
+  document.getElementById('slogan').innerText = translations[lang].slogan;
+  document.getElementById('footer-text').innerText = translations[lang].footer;
+  renderCatalog();
+}
+
+function renderCatalog() {
+  const container = document.getElementById('catalog-container');
+  container.innerHTML = '';
+
+  categories.forEach(cat => {
+    const catProducts = products.filter(p => p.cat === cat.id);
+    if (catProducts.length === 0) return;
+
+    const section = document.createElement('section');
+    section.className = 'category-section';
+    const catTitle = currentLang === 'en' ? cat.en : cat.he;
+    section.innerHTML = `
+      <h2 class="category-title">${catTitle}</h2>
+      <div class="product-grid"></div>
+    `;
+    
+    const grid = section.querySelector('.product-grid');
+    catProducts.forEach(product => {
+      const name = currentLang === 'en' ? product.nameEn : product.nameHe;
+      const displayPrice = product.price ? `₪${product.price}` : translations[currentLang].tbd;
+      const waText = translations[currentLang].waMsg + name + ".";
+      const whatsappUrl = `https://wa.me/972586780680?text=${encodeURIComponent(waText)}`;
+      const emailSub = translations[currentLang].emailSub + name;
+      const emailUrl = `mailto:mm3dprinting613@gmail.com?subject=${encodeURIComponent(emailSub)}&body=${encodeURIComponent(waText)}`;
+
+      grid.innerHTML += `
+        <div class="product-card">
+          ${product.ribbon ? `<div class="ribbon">${translations[currentLang].fourPack}</div>` : ''}
+          <img src="images/${product.nameEn}.png" class="product-img" 
+               onerror="this.src='https://via.placeholder.com/300x200?text=${encodeURIComponent(name)}'">
+          <div class="product-details">
+            <h3 class="product-name">${name}</h3>
+            <p class="product-price">${displayPrice}</p>
+            <div class="btn-group">
+              <a href="${whatsappUrl}" target="_blank" class="btn btn-whatsapp">${translations[currentLang].orderWa}</a>
+              <a href="${emailUrl}" class="btn btn-email">${translations[currentLang].orderEmail}</a>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    container.appendChild(section);
+  });
+}
+
+setLanguage('en');
+</script>
+</body>
+</html>

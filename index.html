@@ -365,51 +365,51 @@ const translations = {
   }
 };
 
-// Updated Category List and Order
+// Renamed and Ordered Categories exactly as requested
 const categories = [
-  { id: "Pesach", en: "Pesach Specials", he: "מבצעי פסח" },
-  { id: "Fidget Toys", en: "Fidgets & Toys", he: "צעצועי פידג'ט" },
-  { id: "Keyrings", en: "Custom Keyrings", he: "מחזיקי מפתחות" },
-  { id: "Shopping Essentials", en: "Shopping Smart", he: "מוצרי קניות" },
-  { id: "Tefillin Boxes", en: "Tefillin Cases", he: "בתי תפילין" },
-  { id: "Tzedakah Box", en: "Tzedakah Boxes", he: "קופות צדקה" },
-  { id: "Travel Essentials", en: "Travel Gear", he: "ציוד למטיילים" },
-  { id: "Tools & Accessories", en: "Home & Tools", he: "כלים ואביזרים" }
+  { id: "Pesach", en: "Pesach", he: "פסח" },
+  { id: "Fidget", en: "fidget toys", he: "צעצועי פידג'ט" },
+  { id: "Keyrings", en: "keyrings", he: "מחזיקי מפתחות" },
+  { id: "Shopping", en: "Shopping essentials", he: "מוצרי קניות" },
+  { id: "Tefillin", en: "Tefillin boxes", he: "בתי תפילין" },
+  { id: "Tzedakah", en: "Tzedakah Boxes", he: "קופות צדקה" },
+  { id: "Travel", en: "Travel essentials", he: "ציוד למטיילים" },
+  { id: "Tools", en: "tools and accessories", he: "כלים ואביזרים" }
 ];
 
 const products = [
   { nameEn: "Chametz-Free sign", nameHe: "חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
   { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach", ext: "png" },
-  { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping Essentials", ext: "png" },
-  { nameEn: "Car Seat Hook", nameHe: "וו למושב הרכב", price: "25.00", cat: "Shopping Essentials", ext: "png" },
-  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלה", price: "10.00", cat: "Shopping Essentials", ext: "png" },
+  { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping", ext: "png" },
+  { nameEn: "Car Seat Hook", nameHe: "וו למושב הרכב", price: "25.00", cat: "Shopping", ext: "png" },
+  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלה", price: "10.00", cat: "Shopping", ext: "png" },
   { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אמוג'י", price: "10.00", cat: "Keyrings", ext: "png" },
   { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "Keyrings", ext: "png" },
   { nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: "10.00", cat: "Keyrings", ext: "png" },
   { nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: "20.00", cat: "Keyrings", ext: "png" },
   { nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: "15.00", cat: "Keyrings", ext: "png" },
-  { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "Fidget Toys", ext: "png" },
-  { nameEn: "Fidget star", price: "15.00", nameHe: "כוכב פידג'ט", cat: "Fidget Toys", ext: "png" },
-  { nameEn: "Flexi Rex", price: "15.00", nameHe: "דינו-טיק", cat: "Fidget Toys", ext: "png" },
-  { nameEn: "Infinity Fidget Cube", nameHe: "קובית אינסוף", price: "15.00", cat: "Fidget Toys", ext: "png" },
-  { nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בצורת בית המקדש", price: "60.00", cat: "Tefillin Boxes", ext: "png" },
-  { nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: "77.00", cat: "Tzedakah Box", ext: "png" },
-  { nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: "30.00", cat: "Tzedakah Box", ext: "png" },
-  { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעונית", price: "35.00", cat: "Tzedakah Box", ext: "png" },
-  { nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: "50.00", cat: "Tzedakah Box", ext: "png" },
-  { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה מחליק", price: "30.00", cat: "Tzedakah Box", ext: "png" },
-  { nameEn: "twist tzedaka box", nameHe: "קופת צדקה טוויסט", price: "40.00", cat: "Tzedakah Box", ext: "png" },
-  { nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי לנסיעות", price: "25.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "Earphone case & phone stand", nameHe: "נרתיק אוזניות ומעמד לטלפון", price: "20.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "Modular Tie Box with Travel Lid", nameHe: "קופסת עניבות מודולרית", price: "40.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים OralB", price: "15.00", cat: "Travel Essentials", ext: "webp" },
-  { nameEn: "Q-tip - travel box", nameHe: "קופסת מקלוני אוזניים לנסיעה", price: "25.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "Travel cutlery box", nameHe: "קופסת סכו\"ם לנסיעות", price: "35.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "Universal card case", nameHe: "נרתיק כרטיסים אוניברסלי", price: "30.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק מברשת שיניים לנסיעה", price: "15.00", cat: "Travel Essentials", ext: "png" },
-  { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק משאבת הזנה אינפיניטי", price: "60.00", cat: "Tools & Accessories", ext: "png" },
-  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Tools & Accessories", ext: "png" }
+  { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Fidget star", price: "15.00", nameHe: "כוכב פידג'ט", cat: "Fidget", ext: "png" },
+  { nameEn: "Flexi Rex", price: "15.00", nameHe: "דינו-טיק", cat: "Fidget", ext: "png" },
+  { nameEn: "Infinity Fidget Cube", nameHe: "קובית אינסוף", price: "15.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בצורת בית המקדש", price: "60.00", cat: "Tefillin", ext: "png" },
+  { nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: "77.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: "30.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעונית", price: "35.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: "50.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה מחליק", price: "30.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "twist tzedaka box", nameHe: "קופת צדקה טוויסט", price: "40.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי לנסיעות", price: "25.00", cat: "Travel", ext: "png" },
+  { nameEn: "Earphone case & phone stand", nameHe: "נרתיק אוזניות ומעמד לטלפון", price: "20.00", cat: "Travel", ext: "png" },
+  { nameEn: "Modular Tie Box with Travel Lid", nameHe: "קופסת עניבות מודולרית", price: "40.00", cat: "Travel", ext: "png" },
+  { nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים OralB", price: "15.00", cat: "Travel", ext: "webp" },
+  { nameEn: "Q-tip - travel box", nameHe: "קופסת מקלוני אוזניים לנסיעה", price: "25.00", cat: "Travel", ext: "png" },
+  { nameEn: "Travel cutlery box", nameHe: "קופסת סכו\"ם לנסיעות", price: "35.00", cat: "Travel", ext: "png" },
+  { nameEn: "Universal card case", nameHe: "נרתיק כרטיסים אוניברסלי", price: "30.00", cat: "Travel", ext: "png" },
+  { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "Travel", ext: "png" },
+  { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק מברשת שיניים לנסיעה", price: "15.00", cat: "Travel", ext: "png" },
+  { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק משאבת הזנה אינפיניטי", price: "60.00", cat: "Tools", ext: "png" },
+  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Tools", ext: "png" }
 ];
 
 function setLanguage(lang) {
@@ -430,12 +430,10 @@ function renderCatalog() {
   const container = document.getElementById('catalog-container');
   container.innerHTML = '';
 
-  // Logic to hide Pesach after April 1st
   const now = new Date();
-  const cutoff = new Date(now.getFullYear(), 3, 1); // Month is 0-indexed, so 3 is April
+  const cutoff = new Date(now.getFullYear(), 3, 1); 
 
   categories.forEach(cat => {
-    // Hide Pesach if date is past April 1st
     if (cat.id === "Pesach" && now >= cutoff) return;
 
     const catProducts = products.filter(p => p.cat === cat.id);

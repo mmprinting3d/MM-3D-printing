@@ -169,11 +169,20 @@
         right: -5px;
     }
 
-    .product-img {
+    .product-img-container {
       width: 100%;
       height: 220px;
-      object-fit: cover;
-      background: #eee;
+      background: #f9f9f9; /* Light background for 'contain' fit */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Changed from 'cover' so images aren't cut out */
     }
 
     .product-details {
@@ -284,7 +293,7 @@ const categories = [
 ];
 
 const products = [
-  { nameEn: "Chametz-Free sign", nameHe: "חדר זה נקי לפסח", price: "120.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
+  { nameEn: "Chametz-Free sign", nameHe: "חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
   { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach" },
   { nameEn: "Checklist", nameHe: "צ'ק ליסט", price: "35.00", cat: "Back to School", ext: "jpg" },
   { nameEn: "Phone Stand with a Charging Slot", nameHe: "מעמד לטלפון עם חריץ טעינה", price: "30.00", cat: "Back to School" },
@@ -368,8 +377,10 @@ function renderCatalog() {
       grid.innerHTML += `
         <div class="product-card">
           ${product.ribbon ? `<div class="ribbon">${translations[currentLang][product.ribbon]}</div>` : ''}
-          <img src="${imgSrc}" class="product-img" 
-               onerror="this.src='https://via.placeholder.com/300x200?text=${encodeURIComponent(name)}'">
+          <div class="product-img-container">
+            <img src="${imgSrc}" class="product-img" 
+                 onerror="this.src='https://via.placeholder.com/300x200?text=${encodeURIComponent(name)}'">
+          </div>
           <div class="product-details">
             <h3 class="product-name">${name}</h3>
             <p class="product-price">${displayPrice}</p>

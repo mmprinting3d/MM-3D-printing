@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catalog | MM 3D Printing</title>
+  <!-- Favicon / Tab Icon -->
   <link rel="icon" type="image/png" href="images/logo.png">
   <style>
     :root {
@@ -364,32 +365,29 @@ const translations = {
   }
 };
 
+// Updated Category List and Order
 const categories = [
   { id: "Pesach", en: "Pesach Specials", he: "מבצעי פסח" },
-  { id: "Shopping Essentials", en: "Shopping Smart", he: "מוצרי קניות" },
-  { id: "Back to School", en: "Back to School", he: "חזרה ללימודים" },
-  { id: "Book Accessories", en: "Book Enthusiasts", he: "אביזרי ספרים" },
   { id: "Fidget Toys", en: "Fidgets & Toys", he: "צעצועי פידג'ט" },
+  { id: "Keyrings", en: "Custom Keyrings", he: "מחזיקי מפתחות" },
+  { id: "Shopping Essentials", en: "Shopping Smart", he: "מוצרי קניות" },
   { id: "Tefillin Boxes", en: "Tefillin Cases", he: "בתי תפילין" },
   { id: "Tzedakah Box", en: "Tzedakah Boxes", he: "קופות צדקה" },
   { id: "Travel Essentials", en: "Travel Gear", he: "ציוד למטיילים" },
-  { id: "Tools & Accessories", en: "Home & Tools", he: "כלים ואביזרים" },
-  { id: "Keyrings", en: "Custom Keyrings", he: "מחזיקי מפתחות" }
+  { id: "Tools & Accessories", en: "Home & Tools", he: "כלים ואביזרים" }
 ];
 
 const products = [
   { nameEn: "Chametz-Free sign", nameHe: "חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
   { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach", ext: "png" },
-  { nameEn: "Checklist", nameHe: "צ'ק ליסט", price: "35.00", cat: "Back to School", ext: "png" },
-  { nameEn: "Phone Stand with a Charging Slot", nameHe: "מעמד לטלפון עם חריץ טעינה", price: "30.00", cat: "Back to School", ext: "png" },
-  { nameEn: "Sticky Note Holder", nameHe: "מעמד לדפי ממו", price: "35.00", cat: "Back to School", ext: "png" },
-  { nameEn: "Elegant book stand", nameHe: "מעמד ספרים אלגנטי", price: "35.00", cat: "Book Accessories", ext: "png" },
-  { nameEn: "Foldable Book Stand", nameHe: "מעמד ספרים מתקפל", price: "35.00", cat: "Book Accessories", ext: "png" },
-  { nameEn: "Simple Book End stop", nameHe: "מעצורי ספרים פשוטים", price: "25.00", cat: "Book Accessories", ext: "png", ribbon: "twoPack" },
-  { nameEn: "the book bookmark", nameHe: "סימניית ספר מיוחדת", price: "5.00", cat: "Book Accessories", ext: "png" },
-  { nameEn: "Zipper bookmark", nameHe: "סימניית רוכסן", price: "15.00", cat: "Book Accessories", ext: "png" },
-  { nameEn: "book bookmark", nameHe: "סימניייה לספר", price: "10.00", cat: "Book Accessories", ext: "png" },
+  { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping Essentials", ext: "png" },
+  { nameEn: "Car Seat Hook", nameHe: "וו למושב הרכב", price: "25.00", cat: "Shopping Essentials", ext: "png" },
+  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלה", price: "10.00", cat: "Shopping Essentials", ext: "png" },
   { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אמוג'י", price: "10.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: "10.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: "20.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: "15.00", cat: "Keyrings", ext: "png" },
   { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "Fidget Toys", ext: "png" },
   { nameEn: "Fidget star", price: "15.00", nameHe: "כוכב פידג'ט", cat: "Fidget Toys", ext: "png" },
   { nameEn: "Flexi Rex", price: "15.00", nameHe: "דינו-טיק", cat: "Fidget Toys", ext: "png" },
@@ -411,14 +409,7 @@ const products = [
   { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "Travel Essentials", ext: "png" },
   { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק מברשת שיניים לנסיעה", price: "15.00", cat: "Travel Essentials", ext: "png" },
   { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק משאבת הזנה אינפיניטי", price: "60.00", cat: "Tools & Accessories", ext: "png" },
-  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Tools & Accessories", ext: "png" },
-  { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "Keyrings", ext: "png" },
-  { nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: "10.00", cat: "Keyrings", ext: "png" },
-  { nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: "20.00", cat: "Keyrings", ext: "png" },
-  { nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: "15.00", cat: "Keyrings", ext: "png" },
-  { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping Essentials", ext: "png" },
-  { nameEn: "Car Seat Hook", nameHe: "וו למושב הרכב", price: "25.00", cat: "Shopping Essentials", ext: "png" },
-  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלה", price: "10.00", cat: "Shopping Essentials", ext: "png" }
+  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Tools & Accessories", ext: "png" }
 ];
 
 function setLanguage(lang) {
@@ -439,7 +430,14 @@ function renderCatalog() {
   const container = document.getElementById('catalog-container');
   container.innerHTML = '';
 
+  // Logic to hide Pesach after April 1st
+  const now = new Date();
+  const cutoff = new Date(now.getFullYear(), 3, 1); // Month is 0-indexed, so 3 is April
+
   categories.forEach(cat => {
+    // Hide Pesach if date is past April 1st
+    if (cat.id === "Pesach" && now >= cutoff) return;
+
     const catProducts = products.filter(p => p.cat === cat.id);
     if (catProducts.length === 0) return;
 

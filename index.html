@@ -5,23 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catalog | MM 3D Printing</title>
   
-  <!-- Favicon setup -->
-  <!-- Standard favicon -->
+  <!-- Favicon setup - Corrected to match your GitHub folder structure -->
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="favicon/favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="favicon/favicon-64x64.png">
   <link rel="shortcut icon" href="favicon/favicon.ico">
-
-  <!-- Apple touch icon -->
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-
-  <!-- Android / Chrome -->
   <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="favicon/android-chrome-512x512.png">
-
-  <!-- Web app manifest -->
-  <link rel="manifest" href="favicon/site.webmanifest.webmanifest">
+  
+  <!-- Corrected manifest filename based on your GitHub screenshot -->
+  <link rel="manifest" href="favicon/site.webmanifest">
 
   <style>
     :root {
@@ -80,7 +73,22 @@
     }
 
     .header { text-align: center; margin-bottom: 50px; }
-    .logo { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    
+    .logo-container {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .logo-img { width: 100%; height: 100%; object-fit: cover; }
+    .logo-fallback { width: 60%; height: 60%; color: var(--primary-color); }
+
     h1 { margin: 0; font-size: 2.5rem; color: var(--primary-color); }
     .slogan { color: var(--text-gray); margin-top: 5px; }
 
@@ -94,21 +102,23 @@
 
     .contact-link {
       background: white;
-      padding: 10px 20px;
-      border-radius: 10px;
+      padding: 12px 24px;
+      border-radius: 12px;
       text-decoration: none;
       color: var(--primary-color);
       font-weight: 600;
       border: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .contact-link:hover {
       background: #f1f5f9;
       transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
 
     .category-section { margin-bottom: 60px; }
@@ -199,15 +209,19 @@
 
 <div class="container">
   <div class="header">
-    <img src="images/logo.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/100?text=MM'">
+    <div class="logo-container">
+      <img src="images/logo.png" alt="Logo" class="logo-img" id="main-logo" onerror="showFallbackLogo()">
+      <svg id="logo-svg" class="logo-fallback" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+    </div>
     <h1>MM 3D Printing</h1>
     <p class="slogan" id="slogan">Let's make the impossible possible</p>
   </div>
 
+  <!-- Contact Bar - Updated order and emojis as requested -->
   <div class="contact-bar">
-    <a href="https://wa.me/97226527074" class="contact-link" id="contact-wa">📱 WhatsApp</a>
-    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link" id="contact-email">✉ Email</a>
-    <a href="tel:0586780680" class="contact-link" id="contact-call">📞 Call</a>
+    <a href="tel:0586780680" class="contact-link" id="contact-call">Call 📞</a>
+    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link" id="contact-email">Email ✉</a>
+    <a href="https://wa.me/97226527074" class="contact-link" id="contact-wa">WhatsApp 📱</a>
   </div>
 
   <div id="catalog-container"></div>
@@ -220,15 +234,19 @@
 <script>
 let currentLang = 'en';
 
-// Sale configuration - Active until end of April 1st, 2026
+function showFallbackLogo() {
+  document.getElementById('main-logo').style.display = 'none';
+  document.getElementById('logo-svg').style.display = 'block';
+}
+
 const SALE_END_DATE = new Date('2026-04-02T00:00:00');
 
 const translations = {
   en: {
     slogan: "Let's make the impossible possible",
-    contactWa: "📱 WhatsApp",
-    contactEmail: "✉ Email",
-    contactCall: "📞 Call",
+    contactWa: "WhatsApp 📱",
+    contactEmail: "Email ✉",
+    contactCall: "Call 📞",
     orderWa: "Order via WhatsApp",
     orderEmail: "Inquire via Email",
     waMsg: "Hi! I am interested in ordering: ",
@@ -324,11 +342,9 @@ function setLanguage(lang) {
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-he').classList.toggle('active', lang === 'he');
   
-  // Update header and footer
   document.getElementById('slogan').innerText = translations[lang].slogan;
   document.getElementById('footer-text').innerText = translations[lang].footer;
   
-  // Update contact bar buttons
   document.getElementById('contact-wa').innerText = translations[lang].contactWa;
   document.getElementById('contact-email').innerText = translations[lang].contactEmail;
   document.getElementById('contact-call').innerText = translations[lang].contactCall;
@@ -403,7 +419,13 @@ function renderCatalog() {
   });
 }
 
-window.onload = () => setLanguage('en');
+window.onload = () => {
+  setLanguage('en');
+  const logo = document.getElementById('main-logo');
+  if (logo && logo.naturalWidth === 0) {
+    showFallbackLogo();
+  }
+};
 </script>
 </body>
 </html>

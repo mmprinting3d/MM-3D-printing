@@ -4,308 +4,146 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catalog | MM 3D Printing</title>
-  <!-- Favicon / Tab Icon -->
   <link rel="icon" type="image/png" href="images/logo.png">
   <style>
     :root {
       --primary-color: #0f172a;
       --accent-green: #22c55e;
-      --accent-blue: #3b82f6;
       --text-main: #1e293b;
       --text-gray: #64748b;
       --bg-gray: #f8fafc;
       --ribbon-color: #ef4444;
-      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
     }
 
     body {
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
       background: var(--bg-gray);
       margin: 0;
-      padding: 0;
       color: var(--text-main);
-      line-height: 1.6;
     }
 
-    body.rtl {
-      direction: rtl;
-    }
+    body.rtl { direction: rtl; }
 
     .container {
-      max-width: 1280px;
+      max-width: 1200px;
       margin: auto;
-      padding: 60px 24px;
+      padding: 40px 20px;
     }
 
     .lang-toggle {
       position: fixed;
-      top: 24px;
-      right: 24px;
+      top: 20px;
+      right: 20px;
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 4px;
+      background: white;
+      padding: 5px;
       border-radius: 50px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       display: flex;
-      border: 1px solid rgba(255,255,255,0.3);
     }
 
-    body.rtl .lang-toggle {
-      right: auto;
-      left: 24px;
-    }
+    body.rtl .lang-toggle { right: auto; left: 20px; }
 
     .lang-btn {
       border: none;
       background: none;
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 50px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 0.85rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       color: var(--text-gray);
     }
 
     .lang-btn.active {
       background: var(--primary-color);
       color: white;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .logo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      padding: 5px;
-      background: white;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      margin-bottom: 24px;
-    }
-
-    h1 {
-      font-size: 2.75rem;
-      font-weight: 800;
-      margin: 0;
-      color: var(--primary-color);
-      letter-spacing: -0.025em;
-    }
-
-    .slogan {
-      font-size: 1.1rem;
-      color: var(--text-gray);
-      margin-top: 8px;
-      font-weight: 400;
-    }
+    .header { text-align: center; margin-bottom: 50px; }
+    .logo { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    h1 { margin: 0; font-size: 2.5rem; color: var(--primary-color); }
+    .slogan { color: var(--text-gray); margin-top: 5px; }
 
     .contact-bar {
       display: flex;
       justify-content: center;
-      gap: 16px;
-      margin-bottom: 80px;
+      gap: 15px;
+      margin-bottom: 50px;
       flex-wrap: wrap;
     }
 
     .contact-link {
       background: white;
-      padding: 12px 24px;
-      border-radius: 12px;
+      padding: 10px 20px;
+      border-radius: 10px;
       text-decoration: none;
       color: var(--primary-color);
       font-weight: 600;
-      font-size: 0.95rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-      transition: all 0.2s ease;
       border: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .contact-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-      border-color: #cbd5e1;
-    }
-
-    .category-section { margin-bottom: 80px; }
-    
+    .category-section { margin-bottom: 60px; }
     .category-title {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 40px;
-      color: var(--primary-color);
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .category-title::after {
-      content: "";
-      flex-grow: 1;
-      height: 2px;
-      background: #e2e8f0;
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
     }
 
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 32px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
     }
 
     .product-card {
       background: white;
-      border-radius: 20px;
+      border-radius: 15px;
       overflow: hidden;
       box-shadow: var(--card-shadow);
       display: flex;
       flex-direction: column;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
-      border: 1px solid rgba(226, 232, 240, 0.8);
-    }
-
-    .product-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
     }
 
     .ribbon {
       position: absolute;
-      top: 15px;
-      left: 15px;
+      top: 10px;
+      left: 10px;
       background: var(--ribbon-color);
       color: white;
-      padding: 6px 14px;
-      font-weight: 700;
+      padding: 4px 10px;
       font-size: 0.75rem;
-      border-radius: 8px;
-      z-index: 10;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+      font-weight: bold;
+      border-radius: 5px;
+      z-index: 2;
     }
-    
-    body.rtl .ribbon {
-        left: auto;
-        right: 15px;
-    }
+    body.rtl .ribbon { left: auto; right: 10px; }
 
-    .product-img-container {
-      width: 100%;
-      padding-top: 100%; 
-      background: #f1f5f9;
-      position: relative;
-      overflow: hidden;
-    }
+    .product-img-container { width: 100%; aspect-ratio: 1/1; background: #f1f5f9; }
+    .product-img { width: 100%; height: 100%; object-fit: cover; }
 
-    .product-img-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .product-details { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+    .product-name { font-size: 1.1rem; font-weight: 700; margin: 0 0 10px 0; min-height: 2.8em; }
+    .product-price { font-size: 1.3rem; color: var(--accent-green); font-weight: 800; margin-bottom: 20px; }
 
-    .product-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.3s ease;
-      opacity: 0; 
-    }
-
-    .product-img.loaded {
-      opacity: 1;
-    }
-
-    .product-card:hover .product-img {
-      transform: scale(1.1);
-    }
-
-    .product-details {
-      padding: 24px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      background: white;
-      border-top: 1px solid #f1f5f9;
-    }
-
-    .product-name {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin: 0 0 8px 0;
-      color: var(--primary-color);
-      line-height: 1.3;
-      min-height: 2.6em;
-    }
-
-    .product-price {
-      font-size: 1.4rem;
-      color: var(--accent-green);
-      font-weight: 800;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-group { display: flex; flex-direction: column; gap: 10px; }
-    
+    .btn-group { display: flex; flex-direction: column; gap: 8px; }
     .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-      border-radius: 12px;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      gap: 8px;
+      font-size: 0.85rem;
     }
+    .btn-whatsapp { background: #22c55e; color: white; }
+    .btn-email { background: #f8fafc; color: var(--primary-color); border: 1px solid #e2e8f0; }
 
-    .btn-whatsapp { 
-      background: #22c55e; 
-      color: white; 
-      border: 1px solid #16a34a;
-    }
-    .btn-whatsapp:hover { background: #16a34a; }
-
-    .btn-email { 
-      background: white; 
-      color: var(--primary-color); 
-      border: 1.5px solid #e2e8f0;
-    }
-    .btn-email:hover { 
-      background: #f8fafc;
-      border-color: #cbd5e1;
-    }
-
-    footer { 
-      text-align: center; 
-      padding: 60px 24px; 
-      color: var(--text-gray); 
-      border-top: 1px solid #e2e8f0;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 640px) {
-      h1 { font-size: 2rem; }
-      .container { padding: 40px 16px; }
-      .product-grid { gap: 20px; }
-    }
+    footer { text-align: center; padding: 40px; color: var(--text-gray); }
   </style>
 </head>
 <body>
@@ -317,21 +155,21 @@
 
 <div class="container">
   <div class="header">
-    <img src="images/logo.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/150?text=MM+3D'">
+    <img src="images/logo.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/100?text=MM'">
     <h1>MM 3D Printing</h1>
     <p class="slogan" id="slogan">Let's make the impossible possible</p>
   </div>
 
   <div class="contact-bar">
-    <a href="https://wa.me/97226527074" class="contact-link" id="link-wa"><span>📱</span> WhatsApp</a>
-    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link" id="link-email"><span>✉</span> Email</a>
-    <a href="tel:0586780680" class="contact-link"><span>📞</span> Call</a>
+    <a href="https://wa.me/97226527074" class="contact-link">📱 WhatsApp</a>
+    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link">✉ Email</a>
+    <a href="tel:0586780680" class="contact-link">📞 Call</a>
   </div>
 
   <div id="catalog-container"></div>
 
   <footer>
-    <p id="footer-text">&copy; 2026 MM 3D Printing. All Rights Reserved.</p>
+    <p id="footer-text">© 2026 MM 3D Printing. All Rights Reserved.</p>
   </footer>
 </div>
 
@@ -343,72 +181,83 @@ const translations = {
     slogan: "Let's make the impossible possible",
     orderWa: "Order via WhatsApp",
     orderEmail: "Inquire via Email",
-    waMsg: "Hi! I am interested in ordering the ",
+    waMsg: "Hi! I am interested in ordering: ",
     emailSub: "Order Inquiry: ",
     footer: "© 2026 MM 3D Printing. All Rights Reserved.",
-    noImg: "No Image",
     tbd: "Price on Request",
     fourPack: "4 Pack",
-    twoPack: "2 Pack"
+    catPesach: "Pesach",
+    catFidget: "Fidget Toys",
+    catKeyrings: "Keyrings",
+    catShopping: "Shopping Essentials",
+    catTefillin: "Tefillin Boxes",
+    catTzedakah: "Tzedakah Boxes",
+    catTravel: "Travel Essentials",
+    catTools: "Tools and Accessories"
   },
   he: {
     slogan: "בואו נהפוך את הבלתי אפשרי לאפשרי",
     orderWa: "הזמנה בוואטסאפ",
     orderEmail: "בירור במייל",
-    waMsg: "שלום! אני מעוניין להזמין את ",
+    waMsg: "שלום! אני מעוניין להזמין את: ",
     emailSub: "בירור הזמנה: ",
     footer: "© 2026 MM 3D Printing. כל הזכויות שמורות.",
-    noImg: "אין תמונה",
     tbd: "מחיר לפי דרישה",
     fourPack: "מארז רביעייה",
-    twoPack: "מארז זוגי"
+    catPesach: "פסח",
+    catFidget: "צעצועי פידג'ט",
+    catKeyrings: "מחזיקי מפתחות",
+    catShopping: "אביזרים לקניות",
+    catTefillin: "בתי תפילין",
+    catTzedakah: "קופות צדקה",
+    catTravel: "אביזרים לנוסעים",
+    catTools: "כלים ואביזרים"
   }
 };
 
-// Renamed and Ordered Categories exactly as requested
 const categories = [
-  { id: "Pesach", en: "Pesach", he: "פסח" },
-  { id: "Fidget", en: "fidget toys", he: "צעצועי פידג'ט" },
-  { id: "Keyrings", en: "keyrings", he: "מחזיקי מפתחות" },
-  { id: "Shopping", en: "Shopping essentials", he: "מוצרי קניות" },
-  { id: "Tefillin", en: "Tefillin boxes", he: "בתי תפילין" },
-  { id: "Tzedakah", en: "Tzedakah Boxes", he: "קופות צדקה" },
-  { id: "Travel", en: "Travel essentials", he: "ציוד למטיילים" },
-  { id: "Tools", en: "tools and accessories", he: "כלים ואביזרים" }
+  { id: "Pesach", key: "catPesach" },
+  { id: "Shopping", key: "catShopping" },
+  { id: "Keyrings", key: "catKeyrings" },
+  { id: "Fidget", key: "catFidget" },
+  { id: "Tefillin", key: "catTefillin" },
+  { id: "Tzedakah", key: "catTzedakah" },
+  { id: "Travel", key: "catTravel" },
+  { id: "Tools", key: "catTools" }
 ];
 
 const products = [
-  { nameEn: "Chametz-Free sign", nameHe: "חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
+  { nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
   { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach", ext: "png" },
   { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping", ext: "png" },
-  { nameEn: "Car Seat Hook", nameHe: "וו למושב הרכב", price: "25.00", cat: "Shopping", ext: "png" },
-  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלה", price: "10.00", cat: "Shopping", ext: "png" },
-  { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אמוג'י", price: "10.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "Car Seat Hook", nameHe: "מתלה לרכב", price: "25.00", cat: "Shopping", ext: "png" },
+  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלת קניות", price: "10.00", cat: "Shopping", ext: "png" },
+  { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אימוג'י", price: "10.00", cat: "Keyrings", ext: "png" },
   { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "Keyrings", ext: "png" },
   { nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: "10.00", cat: "Keyrings", ext: "png" },
   { nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: "20.00", cat: "Keyrings", ext: "png" },
   { nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: "15.00", cat: "Keyrings", ext: "png" },
   { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "Fidget", ext: "png" },
-  { nameEn: "Fidget star", price: "15.00", nameHe: "כוכב פידג'ט", cat: "Fidget", ext: "png" },
-  { nameEn: "Flexi Rex", price: "15.00", nameHe: "דינו-טיק", cat: "Fidget", ext: "png" },
-  { nameEn: "Infinity Fidget Cube", nameHe: "קובית אינסוף", price: "15.00", cat: "Fidget", ext: "png" },
-  { nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בצורת בית המקדש", price: "60.00", cat: "Tefillin", ext: "png" },
+  { nameEn: "Fidget star", nameHe: "כוכב פידג'ט", price: "15.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Flexi Rex", nameHe: "דינו פידג'ט", price: "15.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Infinity Fidget Cube", nameHe: "קוביית אינסוף", price: "15.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בעיצוב בית המקדש", price: "60.00", cat: "Tefillin", ext: "png" },
   { nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: "77.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: "30.00", cat: "Tzedakah", ext: "png" },
-  { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעונית", price: "35.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעוני", price: "35.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: "50.00", cat: "Tzedakah", ext: "png" },
-  { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה מחליק", price: "30.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה הזזה", price: "30.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "twist tzedaka box", nameHe: "קופת צדקה טוויסט", price: "40.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי לנסיעות", price: "25.00", cat: "Travel", ext: "png" },
-  { nameEn: "Earphone case & phone stand", nameHe: "נרתיק אוזניות ומעמד לטלפון", price: "20.00", cat: "Travel", ext: "png" },
+  { nameEn: "Earphone case & phone stand", nameHe: "נרתיק לאוזניות ומעמד לטלפון", price: "20.00", cat: "Travel", ext: "png" },
   { nameEn: "Modular Tie Box with Travel Lid", nameHe: "קופסת עניבות מודולרית", price: "40.00", cat: "Travel", ext: "png" },
-  { nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים OralB", price: "15.00", cat: "Travel", ext: "webp" },
+  { nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים Oral-B", price: "15.00", cat: "Travel", ext: "webp" },
   { nameEn: "Q-tip - travel box", nameHe: "קופסת מקלוני אוזניים לנסיעה", price: "25.00", cat: "Travel", ext: "png" },
-  { nameEn: "Travel cutlery box", nameHe: "קופסת סכו\"ם לנסיעות", price: "35.00", cat: "Travel", ext: "png" },
+  { nameEn: "Travel cutlery box", nameHe: "קופסת סכו״ם לנסיעות", price: "35.00", cat: "Travel", ext: "png" },
   { nameEn: "Universal card case", nameHe: "נרתיק כרטיסים אוניברסלי", price: "30.00", cat: "Travel", ext: "png" },
   { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "Travel", ext: "png" },
-  { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק מברשת שיניים לנסיעה", price: "15.00", cat: "Travel", ext: "png" },
-  { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק משאבת הזנה אינפיניטי", price: "60.00", cat: "Tools", ext: "png" },
+  { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק למברשת שיניים לנסיעה", price: "15.00", cat: "Travel", ext: "png" },
+  { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק למשאבת הזנה אינפיניטי", price: "60.00", cat: "Tools", ext: "png" },
   { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Tools", ext: "png" }
 ];
 
@@ -422,69 +271,56 @@ function setLanguage(lang) {
   renderCatalog();
 }
 
-function handleImgLoad(img) {
-  img.classList.add('loaded');
-}
-
 function renderCatalog() {
   const container = document.getElementById('catalog-container');
+  if (!container) return;
   container.innerHTML = '';
 
-  const now = new Date();
-  const cutoff = new Date(now.getFullYear(), 3, 1); 
-
   categories.forEach(cat => {
-    if (cat.id === "Pesach" && now >= cutoff) return;
-
     const catProducts = products.filter(p => p.cat === cat.id);
     if (catProducts.length === 0) return;
 
     const section = document.createElement('section');
     section.className = 'category-section';
-    const catTitle = currentLang === 'en' ? cat.en : cat.he;
-    section.innerHTML = `
-      <h2 class="category-title">${catTitle}</h2>
-      <div class="product-grid"></div>
+    
+    let html = `
+      <h2 class="category-title">${translations[currentLang][cat.key]}</h2>
+      <div class="product-grid">
     `;
     
-    const grid = section.querySelector('.product-grid');
     catProducts.forEach(product => {
       const name = currentLang === 'en' ? product.nameEn : product.nameHe;
-      const displayPrice = product.price ? `₪${product.price}` : translations[currentLang].tbd;
-      const waText = translations[currentLang].waMsg + name + ".";
-      const whatsappUrl = `https://wa.me/97226527074?text=${encodeURIComponent(waText)}`;
-      const emailSub = translations[currentLang].emailSub + name;
-      const emailUrl = `mailto:mm3dprinting613@gmail.com?subject=${encodeURIComponent(emailSub)}&body=${encodeURIComponent(waText)}`;
+      const displayPrice = product.price ? "₪" + product.price : translations[currentLang].tbd;
+      const waUrl = "https://wa.me/97226527074?text=" + encodeURIComponent(translations[currentLang].waMsg + name);
+      const emailUrl = "mailto:mm3dprinting613@gmail.com?subject=" + encodeURIComponent(translations[currentLang].emailSub + name);
       
-      const fileExt = product.ext || "png";
-      const imgSrc = `images/${product.nameEn}.${fileExt}`;
+      const imgSrc = "images/" + product.nameEn + "." + (product.ext || "png");
 
-      grid.innerHTML += `
+      html += `
         <div class="product-card">
           ${product.ribbon ? `<div class="ribbon">${translations[currentLang][product.ribbon]}</div>` : ''}
           <div class="product-img-container">
-            <div class="product-img-wrapper">
-              <img src="${imgSrc}" class="product-img" 
-                   onload="handleImgLoad(this)"
-                   onerror="this.onerror=null; this.src='https://via.placeholder.com/800x800/f1f5f9/64748b?text=${encodeURIComponent(name)}'; this.classList.add('loaded');">
-            </div>
+            <img src="${imgSrc}" class="product-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/400?text=${encodeURIComponent(name)}';">
           </div>
           <div class="product-details">
             <h3 class="product-name">${name}</h3>
             <p class="product-price">${displayPrice}</p>
             <div class="btn-group">
-              <a href="${whatsappUrl}" target="_blank" class="btn btn-whatsapp">${translations[currentLang].orderWa}</a>
+              <a href="${waUrl}" target="_blank" class="btn btn-whatsapp">${translations[currentLang].orderWa}</a>
               <a href="${emailUrl}" class="btn btn-email">${translations[currentLang].orderEmail}</a>
             </div>
           </div>
         </div>
       `;
     });
+    
+    html += '</div>';
+    section.innerHTML = html;
     container.appendChild(section);
   });
 }
 
-setLanguage('en');
+window.onload = () => setLanguage('en');
 </script>
 </body>
 </html>

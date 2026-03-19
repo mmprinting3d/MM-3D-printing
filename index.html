@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catalog | MM 3D Printing</title>
-  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="icon" type="image/png" href="images/logo1.png">
   <style>
     :root {
       --primary-color: #0f172a;
@@ -85,6 +85,12 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .contact-link:hover {
+      background: #f1f5f9;
+      transform: translateY(-2px);
     }
 
     .category-section { margin-bottom: 60px; }
@@ -175,15 +181,16 @@
 
 <div class="container">
   <div class="header">
+    <!-- Restored to logo.png while keeping favicon as logo1.png -->
     <img src="images/logo.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/100?text=MM'">
     <h1>MM 3D Printing</h1>
     <p class="slogan" id="slogan">Let's make the impossible possible</p>
   </div>
 
   <div class="contact-bar">
-    <a href="https://wa.me/97226527074" class="contact-link">📱 WhatsApp</a>
-    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link">✉ Email</a>
-    <a href="tel:0586780680" class="contact-link">📞 Call</a>
+    <a href="https://wa.me/97226527074" class="contact-link" id="contact-wa">📱 WhatsApp</a>
+    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link" id="contact-email">✉ Email</a>
+    <a href="tel:0586780680" class="contact-link" id="contact-call">📞 Call</a>
   </div>
 
   <div id="catalog-container"></div>
@@ -202,6 +209,9 @@ const SALE_END_DATE = new Date('2026-04-02T00:00:00');
 const translations = {
   en: {
     slogan: "Let's make the impossible possible",
+    contactWa: "📱 WhatsApp",
+    contactEmail: "✉ Email",
+    contactCall: "📞 Call",
     orderWa: "Order via WhatsApp",
     orderEmail: "Inquire via Email",
     waMsg: "Hi! I am interested in ordering: ",
@@ -210,6 +220,7 @@ const translations = {
     tbd: "Price on Request",
     fourPack: "4 Pack",
     pesachSale: "PESACH SALE",
+    discountTag: "20% OFF",
     catPesach: "Pesach",
     catFidget: "Fidget Toys",
     catKeyrings: "Keyrings",
@@ -221,6 +232,9 @@ const translations = {
   },
   he: {
     slogan: "בואו נהפוך את הבלתי אפשרי לאפשרי",
+    contactWa: "וואטסאפ 📱",
+    contactEmail: "מייל ✉",
+    contactCall: "שיחה 📞",
     orderWa: "הזמנה בוואטסאפ",
     orderEmail: "בירור במייל",
     waMsg: "שלום! אני מעוניין להזמין את: ",
@@ -229,6 +243,7 @@ const translations = {
     tbd: "מחיר לפי דרישה",
     fourPack: "מארז רביעייה",
     pesachSale: "מבצע פסח",
+    discountTag: "20% הנחה",
     catPesach: "פסח",
     catFidget: "צעצועי פידג'ט",
     catKeyrings: "מחזיקי מפתחות",
@@ -252,35 +267,28 @@ const categories = [
 ];
 
 const products = [
-  // Moved Scrub Daddy Stand explicitly to Pesach category
   { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Pesach", ext: "png" },
   { nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
   { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach", ext: "png" },
-  
   { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping", ext: "png" },
   { nameEn: "Car Seat Hook", nameHe: "מתלה לרכב", price: "25.00", cat: "Shopping", ext: "png" },
   { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלת קניות", price: "10.00", cat: "Shopping", ext: "png" },
-  
   { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אימוג'י", price: "10.00", cat: "Keyrings", ext: "png" },
   { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "Keyrings", ext: "png" },
   { nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: "10.00", cat: "Keyrings", ext: "png" },
   { nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: "20.00", cat: "Keyrings", ext: "png" },
   { nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: "15.00", cat: "Keyrings", ext: "png" },
-  
   { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "Fidget", ext: "png" },
   { nameEn: "Fidget star", nameHe: "כוכב פידג'ט", price: "15.00", cat: "Fidget", ext: "png" },
   { nameEn: "Flexi Rex", nameHe: "דינו פידג'ט", price: "15.00", cat: "Fidget", ext: "png" },
   { nameEn: "Infinity Fidget Cube", nameHe: "קוביית אינסוף", price: "15.00", cat: "Fidget", ext: "png" },
-  
   { nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בעיצוב בית המקדש", price: "60.00", cat: "Tefillin", ext: "png" },
-  
   { nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: "77.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: "30.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעוני", price: "35.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: "50.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה הזזה", price: "30.00", cat: "Tzedakah", ext: "png" },
   { nameEn: "twist tzedaka box", nameHe: "קופת צדקה טוויסט", price: "40.00", cat: "Tzedakah", ext: "png" },
-  
   { nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי לנסיעות", price: "25.00", cat: "Travel", ext: "png" },
   { nameEn: "Earphone case & phone stand", nameHe: "נרתיק לאוזניות ומעמד לטלפון", price: "20.00", cat: "Travel", ext: "png" },
   { nameEn: "Modular Tie Box with Travel Lid", nameHe: "קופסת עניבות מודולרית", price: "40.00", cat: "Travel", ext: "png" },
@@ -290,7 +298,6 @@ const products = [
   { nameEn: "Universal card case", nameHe: "נרתיק כרטיסים אוניברסלי", price: "30.00", cat: "Travel", ext: "png" },
   { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "Travel", ext: "png" },
   { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק למברשת שיניים לנסיעה", price: "15.00", cat: "Travel", ext: "png" },
-  
   { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק למשאבת הזנה אינפיניטי", price: "60.00", cat: "Tools", ext: "png" }
 ];
 
@@ -299,8 +306,16 @@ function setLanguage(lang) {
   document.body.className = lang === 'he' ? 'rtl' : '';
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-he').classList.toggle('active', lang === 'he');
+  
+  // Update header and footer
   document.getElementById('slogan').innerText = translations[lang].slogan;
   document.getElementById('footer-text').innerText = translations[lang].footer;
+  
+  // Update contact bar buttons
+  document.getElementById('contact-wa').innerText = translations[lang].contactWa;
+  document.getElementById('contact-email').innerText = translations[lang].contactEmail;
+  document.getElementById('contact-call').innerText = translations[lang].contactCall;
+  
   renderCatalog();
 }
 
@@ -309,7 +324,6 @@ function renderCatalog() {
   if (!container) return;
   container.innerHTML = '';
 
-  // Check if sale is currently active
   const now = new Date();
   const isSaleActive = now < SALE_END_DATE;
 
@@ -350,7 +364,7 @@ function renderCatalog() {
       html += `
         <div class="product-card">
           ${product.ribbon ? `<div class="ribbon">${translations[currentLang][product.ribbon]}</div>` : ''}
-          ${appliesDiscount ? `<div class="discount-badge">20% OFF</div>` : ''}
+          ${appliesDiscount ? `<div class="discount-badge">${translations[currentLang].discountTag}</div>` : ''}
           <div class="product-img-container">
             <img src="${imgSrc}" class="product-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/400?text=${encodeURIComponent(name)}';">
           </div>

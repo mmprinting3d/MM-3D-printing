@@ -10,7 +10,21 @@
   <meta property="og:url" content="https://mmprinting3d.github.io/MM-3D-Printing/">
   <meta property="og:title" content="MM 3D Printing | Catalog">
   <meta property="og:description" content="Let's make the impossible possible. Check out our 3D printed products and accessories.">
+  
   <meta property="og:image" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
+  <meta property="og:image:secure_url" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Favicon setup -->
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon/android-chrome-512x512.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
 
   <style>
     :root {
@@ -72,8 +86,8 @@
     .header { text-align: center; margin-bottom: 50px; }
     
     .logo-container {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       margin: 0 auto 15px;
       border-radius: 50%;
       background: white;
@@ -84,6 +98,7 @@
       overflow: hidden;
     }
     .logo-img { width: 100%; height: 100%; object-fit: cover; }
+    .logo-fallback { width: 60%; height: 60%; color: var(--primary-color); }
 
     h1 { margin: 0; font-size: 2.5rem; color: var(--primary-color); }
     .slogan { color: var(--text-gray); margin-top: 5px; }
@@ -114,9 +129,14 @@
     .contact-link:hover {
       background: #f1f5f9;
       transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
 
-    .icon-svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .icon-svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
 
     .category-section { margin-bottom: 60px; }
     .category-header {
@@ -127,8 +147,12 @@
       padding-bottom: 10px;
       margin-bottom: 30px;
       flex-wrap: wrap;
+      gap: 10px;
     }
-    .category-title { font-size: 1.8rem; margin: 0; }
+    .category-title {
+      font-size: 1.8rem;
+      margin: 0;
+    }
     .sale-info {
       font-size: 0.9rem;
       color: var(--discount-color);
@@ -136,6 +160,7 @@
       background: #fff7ed;
       padding: 4px 12px;
       border-radius: 20px;
+      border: 1px solid #ffedd5;
     }
 
     .product-grid {
@@ -183,13 +208,14 @@
     body.rtl .ribbon { left: auto; right: 10px; }
     body.rtl .discount-badge { right: auto; left: 10px; }
 
-    .product-img-container { width: 100%; aspect-ratio: 1/1; background: #f1f5f9; overflow: hidden; }
-    .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-    .product-card:hover .product-img { transform: scale(1.05); }
+    .product-img-container { width: 100%; aspect-ratio: 1/1; background: #f1f5f9; }
+    .product-img { width: 100%; height: 100%; object-fit: cover; }
 
     .product-details { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
     .product-name { font-size: 1.1rem; font-weight: 700; margin: 0 0 10px 0; min-height: 2.8em; }
-    .product-price { font-size: 1.3rem; color: var(--accent-green); font-weight: 800; margin-bottom: 15px; display: block; }
+    
+    .price-container { margin-bottom: 20px; }
+    .product-price { font-size: 1.3rem; color: var(--accent-green); font-weight: 800; }
 
     .btn-group { display: flex; flex-direction: column; gap: 8px; }
     .btn {
@@ -219,7 +245,8 @@
 <div class="container">
   <div class="header">
     <div class="logo-container">
-      <img src="images/logo.png" alt="MM 3D Printing" class="logo-img">
+      <img src="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png" alt="Logo" class="logo-img" id="main-logo" onerror="showFallbackLogo()">
+      <svg id="logo-svg" class="logo-fallback" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
     </div>
     <h1>MM 3D Printing</h1>
     <p class="slogan" id="slogan">Let's make the impossible possible</p>
@@ -234,7 +261,7 @@
       <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
       <span class="btn-text">Email</span>
     </a>
-    <a href="https://wa.me/972586780680" class="contact-link" id="contact-wa">
+    <a href="https://wa.me/97226527074" class="contact-link" id="contact-wa">
       <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
       <span class="btn-text">WhatsApp</span>
     </a>
@@ -249,6 +276,12 @@
 
 <script>
 let currentLang = 'en';
+
+function showFallbackLogo() {
+  document.getElementById('main-logo').style.display = 'none';
+  document.getElementById('logo-svg').style.display = 'block';
+}
+
 const SALE_END_DATE = new Date('2026-04-01T00:00:00');
 
 const translations = {
@@ -262,16 +295,22 @@ const translations = {
     waMsg: "Hi! I am interested in ordering: ",
     emailSub: "Order Request: ",
     footer: "© 2026 MM 3D Printing. All Rights Reserved.",
+    tbd: "Price on Request",
+    fourPack: "4 Pack",
     sixPack: "6 Pack",
     eightPack: "8 Pack",
-    fourPack: "4 Pack",
+    pesachSale: "PESACH SALE",
     discountTag: "20% OFF TOTAL",
     saleInfo: "20% Discount applied to order total",
-    catPesach: "Pesach Essentials",
+    catPesach: "Pesach",
     catKitchen: "Smart Kitchen Tools",
-    catShopping: "Shopping & Travel",
+    catFidget: "Fidget Toys",
+    catKeyrings: "Keyrings",
+    catShopping: "Shopping Essentials",
+    catTefillin: "Tefillin Boxes",
     catTzedakah: "Tzedakah Boxes",
-    catFidget: "Fidget Toys"
+    catTravel: "Travel Essentials",
+    catTools: "Tools and Accessories"
   },
   he: {
     slogan: "בואו נהפוך את הבלתי אפשרי לאפשרי",
@@ -283,63 +322,77 @@ const translations = {
     waMsg: "שלום! אני מעוניין להזמין את: ",
     emailSub: "בקשת הזמנה: ",
     footer: "© 2026 MM 3D Printing. כל הזכויות שמורות.",
+    tbd: "מחיר לפי דרישה",
+    fourPack: "מארז 4 יחידות",
     sixPack: "מארז 6 יחידות",
     eightPack: "מארז 8 יחידות",
-    fourPack: "מארז 4 יחידות",
+    pesachSale: "מבצע פסח",
     discountTag: "20% הנחה",
     saleInfo: "20% הנחה על סך ההזמנה",
     catPesach: "מוצרי פסח",
     catKitchen: "כלי מטבח חכמים",
+    catFidget: "צעצועי פידג'ט",
+    catKeyrings: "מחזיקי מפתחות",
     catShopping: "קניות ונסיעות",
+    catTefillin: "בתי תפילין",
     catTzedakah: "קופות צדקה",
-    catFidget: "צעצועי פידג'ט"
+    catTravel: "אביזרים לנוסעים",
+    catTools: "כלים ואביזרים"
   }
 };
 
+const categories = [
+  { id: "Pesach", key: "catPesach" },
+  { id: "Kitchen", key: "catKitchen" },
+  { id: "Shopping", key: "catShopping" },
+  { id: "Keyrings", key: "catKeyrings" },
+  { id: "Fidget", key: "catFidget" },
+  { id: "Tefillin", key: "catTefillin" },
+  { id: "Tzedakah", key: "catTzedakah" },
+  { id: "Travel", key: "catTravel" },
+  { id: "Tools", key: "catTools" }
+];
+
 const products = [
-  // Kitchen
-  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג סקראב דאדי", price: "30.00", cat: "catKitchen", img: "Scrub daddy stand.png" },
-  { nameEn: "Ultimate Spoon Rest", nameHe: "מחזיק כף מושלם", price: "30.00", cat: "catKitchen", img: "Ultimate Spoon Rest.png" },
-  { nameEn: "Minimalist Coaster Set", nameHe: "סט תחתיות מינימליסטי", price: "40.00", cat: "catKitchen", img: "Minimalist Coaster Set.png" },
-  { nameEn: "Lid Storage Rack", nameHe: "מתקן לאחסון מכסים", price: "35.00", cat: "catKitchen", img: "Lid Storage Rack.png" },
-  { nameEn: "Universal Bottle Opener", nameHe: "פותחן בקבוקים אוניברסלי", price: "25.00", cat: "catKitchen", img: "Universal Bottle Opener.png" },
-  { nameEn: "Bottle Dryer Rack + Holder", nameHe: "מתקן לייבוש בקבוקים + מחזיק", price: "50.00", cat: "catKitchen", img: "Bottle Dryer Rack + Holder (6-Pack).png", ribbon: "sixPack" },
-  { nameEn: "Cleaning Spray Holder", nameHe: "מחזיק תרסיס ניקוי", price: "25.00", cat: "catKitchen", img: "Cleaning Spray Holder.png" },
-  { nameEn: "Food Bag Clips", nameHe: "קליפסים לשקיות מזון", price: "30.00", cat: "catKitchen", img: "Food Bag Clips (8-Pack).png", ribbon: "eightPack" },
-  
-  // Pesach
-  { nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", price: "60.00", cat: "catPesach", img: "Chametz-Free sign.jpeg", ribbon: "fourPack" },
-  { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "catPesach", img: "Omer calendar.png" },
-  
-  // Tzedakah
-  { nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: "77.00", cat: "catTzedakah", img: "770 tzedakah box.png" },
-  { nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: "30.00", cat: "catTzedakah", img: "Classic tzedakah box.png" },
-  { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעוני", price: "35.00", cat: "catTzedakah", img: "Dual color twist Tzedaka box.png" },
-  { nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: "50.00", cat: "catTzedakah", img: "Round wave tzedakah box.png" },
-  { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה הזזה", price: "30.00", cat: "catTzedakah", img: "Tzedakah Box with Sliding lid.png" },
-  { nameEn: "twist tzedaka box", nameHe: "קופת צדקה טוויסט", price: "40.00", cat: "catTzedakah", img: "twist tzedaka box.png" },
-
-  // Shopping & Travel
-  { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "catShopping", img: "Bag Handle.png" },
-  { nameEn: "Car Seat Hook", nameHe: "מתלה לרכב", price: "25.00", cat: "catShopping", img: "Car Seat Hook.png" },
-  { nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי", price: "25.00", cat: "catShopping", img: "EU Plug Travel Protection.png" },
-  { nameEn: "Earphone case & phone stand", nameHe: "נרתיק אוזניות ומעמד", price: "20.00", cat: "catShopping", img: "Earphone case & phone stand.png" },
-  { nameEn: "Modular Tie Box", nameHe: "קופסת עניבות מודולרית", price: "40.00", cat: "catShopping", img: "Modular Tie Box with Travel Lid.png" },
-  { nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים", price: "15.00", cat: "catShopping", img: "OralB Toothbrush Head Case.png" },
-  { nameEn: "Q-tip - travel box", nameHe: "קופסת מקלוני אוזניים", price: "25.00", cat: "catShopping", img: "Q-tip - travel box.png" },
-  { nameEn: "Travel cutlery box", nameHe: "קופסת סכו״ם לנסיעות", price: "35.00", cat: "catShopping", img: "Travel cutlery box.png" },
-  { nameEn: "Universal card case", nameHe: "נרתיק כרטיסים", price: "30.00", cat: "catShopping", img: "Universal card case.png" },
-  { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "catShopping", img: "Folding Comb.png" },
-  { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק למברשת שיניים", price: "15.00", cat: "catShopping", img: "Toothbrush Travel Case.png" },
-  { nameEn: "Shopping Cart Coin", nameHe: "מטבע לעגלת קניות", price: "10.00", cat: "catShopping", img: "Shopping Cart Coin + Keychain Case.png" },
-
-  // Fidget
-  { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "catFidget", img: "Fidget dragon.png" },
-  { nameEn: "Fidget star", nameHe: "כוכב פידג'ט", price: "15.00", cat: "catFidget", img: "Fidget star.png" },
-  { nameEn: "Flexi Rex", nameHe: "דינו פידג'ט", price: "15.00", cat: "catFidget", img: "Flexi Rex.png" },
-  { nameEn: "Infinity Fidget Cube", nameHe: "קוביית אינסוף", price: "15.00", cat: "catFidget", img: "Infinity Fidget Cube.png" },
-  { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אימוג'י", price: "10.00", cat: "catFidget", img: "Emoji keyring.png" },
-  { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "catFidget", img: "Gyroscope keyring.png" }
+  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג סקראב דאדי", price: "30.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Ultimate Spoon Rest", nameHe: "מחזיק כף מושלם", price: "30.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Minimalist Coaster Set", nameHe: "סט תחתיות מינימליסטי", price: "40.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Lid Storage Rack", nameHe: "מתקן לאחסון מכסים", price: "35.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Universal Bottle Opener", nameHe: "פותחן בקבוקים אוניברסלי", price: "25.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Bottle Dryer Rack + Holder", nameHe: "מתקן לייבוש בקבוקים + מחזיק", price: "50.00", cat: "Kitchen", ext: "png", ribbon: "sixPack" },
+  { nameEn: "Cleaning Spray Holder", nameHe: "מחזיק תרסיס ניקוי", price: "25.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Food Bag Clips", nameHe: "קליפסים לשקיות מזון", price: "30.00", cat: "Kitchen", ext: "png", ribbon: "eightPack" },
+  { nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
+  { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach", ext: "png" },
+  { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping", ext: "png" },
+  { nameEn: "Car Seat Hook", nameHe: "מתלה לרכב", price: "25.00", cat: "Shopping", ext: "png" },
+  { nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מטבע לעגלת קניות", price: "10.00", cat: "Shopping", ext: "png" },
+  { nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אימוג'י", price: "10.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: "20.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: "10.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: "20.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: "15.00", cat: "Keyrings", ext: "png" },
+  { nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: "30.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Fidget star", nameHe: "כוכב פידג'ט", price: "15.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Flexi Rex", nameHe: "דינו פידג'ט", price: "15.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Infinity Fidget Cube", nameHe: "קוביית אינסוף", price: "15.00", cat: "Fidget", ext: "png" },
+  { nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בעיצוב בית המקדש", price: "60.00", cat: "Tefillin", ext: "png" },
+  { nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: "77.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: "30.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעוני", price: "35.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: "50.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה הזזה", price: "30.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "twist tzedaka box", nameHe: "קופת צדקה טוויסט", price: "40.00", cat: "Tzedakah", ext: "png" },
+  { nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי", price: "25.00", cat: "Travel", ext: "png" },
+  { nameEn: "Earphone case & phone stand", nameHe: "נרתיק אוזניות ומעמד", price: "20.00", cat: "Travel", ext: "png" },
+  { nameEn: "Modular Tie Box with Travel Lid", nameHe: "קופסת עניבות מודולרית", price: "40.00", cat: "Travel", ext: "png" },
+  { nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים", price: "15.00", cat: "Travel", ext: "png" },
+  { nameEn: "Q-tip - travel box", nameHe: "קופסת מקלוני אוזניים", price: "25.00", cat: "Travel", ext: "png" },
+  { nameEn: "Travel cutlery box", nameHe: "קופסת סכו״ם לנסיעות", price: "35.00", cat: "Travel", ext: "png" },
+  { nameEn: "Universal card case", nameHe: "נרתיק כרטיסים", price: "30.00", cat: "Travel", ext: "png" },
+  { nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: "24.00", cat: "Travel", ext: "png" },
+  { nameEn: "Toothbrush Travel Case", nameHe: "נרתיק למברשת שיניים", price: "15.00", cat: "Travel", ext: "png" },
+  { nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק למשאבת הזנה אינפיניטי", price: "60.00", cat: "Tools", ext: "png" }
 ];
 
 function setLanguage(lang) {
@@ -359,25 +412,25 @@ function setLanguage(lang) {
 
 function renderCatalog() {
   const container = document.getElementById('catalog-container');
+  if (!container) return;
   container.innerHTML = '';
   const now = new Date();
   const isSaleActive = now < SALE_END_DATE;
 
-  const categoryOrder = ["catPesach", "catKitchen", "catShopping", "catTzedakah", "catFidget"];
-
-  categoryOrder.forEach(catKey => {
-    let catProducts = products.filter(p => p.cat === catKey);
+  categories.forEach(cat => {
+    let catProducts = products.filter(p => p.cat === cat.id);
     if (catProducts.length === 0) return;
     
     const section = document.createElement('section');
     section.className = 'category-section';
     
-    const isSaleCat = catKey === "catPesach" || catKey === "catKitchen";
-    const showSaleInfo = isSaleActive && isSaleCat;
+    const isPesachCategory = cat.id === "Pesach";
+    const isKitchenCategory = cat.id === "Kitchen";
+    const showSaleInfo = isSaleActive && (isPesachCategory || isKitchenCategory);
     
     let html = `
       <div class="category-header">
-        <h2 class="category-title">${translations[currentLang][catKey]}</h2>
+        <h2 class="category-title">${translations[currentLang][cat.key]}</h2>
         ${showSaleInfo ? `<div class="sale-info">${translations[currentLang].saleInfo}</div>` : ''}
       </div>
       <div class="product-grid">
@@ -386,25 +439,32 @@ function renderCatalog() {
     catProducts.forEach(product => {
       const name = currentLang === 'en' ? product.nameEn : product.nameHe;
       const displayPrice = isNaN(parseFloat(product.price)) ? product.price : `₪${product.price}`;
-      const waUrl = "https://wa.me/972586780680?text=" + encodeURIComponent(translations[currentLang].waMsg + name);
+      let priceHtml = `<span class="product-price">${displayPrice}</span>`;
+      
+      const waUrl = "https://wa.me/97226527074?text=" + encodeURIComponent(translations[currentLang].waMsg + name);
       const emailUrl = "mailto:mm3dprinting613@gmail.com?subject=" + encodeURIComponent(translations[currentLang].emailSub + name);
-      const imgSrc = "images/" + product.img;
+      
+      const imgSrc = "images/" + product.nameEn + "." + (product.ext || "png");
+      
+      const shouldShowBadge = isSaleActive && (isPesachCategory || isKitchenCategory);
 
       html += `
         <div class="product-card">
           ${product.ribbon ? `<div class="ribbon">${translations[currentLang][product.ribbon]}</div>` : ''}
-          ${showSaleInfo ? `<div class="discount-badge">${translations[currentLang].discountTag}</div>` : ''}
+          ${shouldShowBadge ? `<div class="discount-badge">${translations[currentLang].discountTag}</div>` : ''}
           <div class="product-img-container">
-            <img src="${imgSrc}" class="product-img" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/400?text=${encodeURIComponent(name)}';">
+            <img src="${imgSrc}" class="product-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/400?text=${encodeURIComponent(name)}';">
           </div>
           <div class="product-details">
             <h3 class="product-name">${name}</h3>
-            <span class="product-price">${displayPrice}</span>
+            <div class="price-container">${priceHtml}</div>
             <div class="btn-group">
               <a href="${waUrl}" target="_blank" class="btn btn-whatsapp">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                 ${translations[currentLang].orderWa}
               </a>
               <a href="${emailUrl}" class="btn btn-email">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 ${translations[currentLang].orderEmail}
               </a>
             </div>
@@ -418,7 +478,11 @@ function renderCatalog() {
   });
 }
 
-window.onload = () => setLanguage('en');
+window.onload = () => {
+  setLanguage('en');
+  const logo = document.getElementById('main-logo');
+  if (logo && logo.naturalWidth === 0) showFallbackLogo();
+};
 </script>
 </body>
 </html>

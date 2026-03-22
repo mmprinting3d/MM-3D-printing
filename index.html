@@ -4,7 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catalog | MM 3D Printing</title>
+
+  <!-- Open Graph / WhatsApp / Facebook Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mmprinting3d.github.io/MM-3D-Printing/">
+  <meta property="og:title" content="MM 3D Printing | Catalog">
+  <meta property="og:description" content="Let's make the impossible possible. Check out our 3D printed products and accessories.">
   
+  <meta property="og:image" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
+  <meta property="og:image:secure_url" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card backup -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MM 3D Printing | Catalog">
+  <meta name="twitter:description" content="Let's make the impossible possible. Check out our 3D printed products and accessories.">
+  <meta name="twitter:image" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
+
   <!-- Favicon setup -->
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -18,6 +36,7 @@
     :root {
       --primary-color: #0f172a;
       --accent-green: #22c55e;
+      --whatsapp-green: #25D366;
       --text-main: #1e293b;
       --text-gray: #64748b;
       --bg-gray: #f8fafc;
@@ -119,6 +138,12 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
 
+    .icon-svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
     .category-section { margin-bottom: 60px; }
     .category-header {
       display: flex;
@@ -200,14 +225,17 @@
 
     .btn-group { display: flex; flex-direction: column; gap: 8px; }
     .btn {
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       padding: 10px;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 700;
       font-size: 0.85rem;
     }
-    .btn-whatsapp { background: #22c55e; color: white; }
+    .btn-whatsapp { background: var(--whatsapp-green); color: white; }
     .btn-email { background: #f8fafc; color: var(--primary-color); border: 1px solid #e2e8f0; }
 
     footer { text-align: center; padding: 40px; color: var(--text-gray); }
@@ -223,7 +251,7 @@
 <div class="container">
   <div class="header">
     <div class="logo-container">
-      <img src="images/logo.png" alt="Logo" class="logo-img" id="main-logo" onerror="showFallbackLogo()">
+      <img src="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png" alt="Logo" class="logo-img" id="main-logo" onerror="showFallbackLogo()">
       <svg id="logo-svg" class="logo-fallback" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
     </div>
     <h1>MM 3D Printing</h1>
@@ -231,9 +259,18 @@
   </div>
 
   <div class="contact-bar">
-    <a href="tel:0586780680" class="contact-link" id="contact-call">Call 📞</a>
-    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link" id="contact-email">Email ✉</a>
-    <a href="https://wa.me/97226527074" class="contact-link" id="contact-wa">WhatsApp 📱</a>
+    <a href="tel:0586780680" class="contact-link" id="contact-call">
+      <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      <span class="btn-text">Call</span>
+    </a>
+    <a href="mailto:mm3dprinting613@gmail.com" class="contact-link" id="contact-email">
+      <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      <span class="btn-text">Email</span>
+    </a>
+    <a href="https://wa.me/97226527074" class="contact-link" id="contact-wa">
+      <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      <span class="btn-text">WhatsApp</span>
+    </a>
   </div>
 
   <div id="catalog-container"></div>
@@ -251,26 +288,28 @@ function showFallbackLogo() {
   document.getElementById('logo-svg').style.display = 'block';
 }
 
-// Sale ends exactly on April 1st, 2026
 const SALE_END_DATE = new Date('2026-04-01T00:00:00');
 
 const translations = {
   en: {
     slogan: "Let's make the impossible possible",
-    contactWa: "WhatsApp 📱",
-    contactEmail: "Email ✉",
-    contactCall: "Call 📞",
+    contactWa: "WhatsApp",
+    contactEmail: "Email",
+    contactCall: "Call",
     orderWa: "Order via WhatsApp",
-    orderEmail: "Inquire via Email",
+    orderEmail: "Order via Email",
     waMsg: "Hi! I am interested in ordering: ",
-    emailSub: "Order Inquiry: ",
+    emailSub: "Order Request: ",
     footer: "© 2026 MM 3D Printing. All Rights Reserved.",
     tbd: "Price on Request",
     fourPack: "4 Pack",
+    sixPack: "6 Pack",
+    eightPack: "8 Pack",
     pesachSale: "PESACH SALE",
     discountTag: "20% OFF TOTAL",
     saleInfo: "20% Discount applied to order total",
     catPesach: "Pesach",
+    catKitchen: "Smart Kitchen Tools",
     catFidget: "Fidget Toys",
     catKeyrings: "Keyrings",
     catShopping: "Shopping Essentials",
@@ -281,20 +320,23 @@ const translations = {
   },
   he: {
     slogan: "בואו נהפוך את הבלתי אפשרי לאפשרי",
-    contactWa: "וואטסאפ 📱",
-    contactEmail: "מייל ✉",
-    contactCall: "שיחה 📞",
+    contactWa: "וואטסאפ",
+    contactEmail: "מייל",
+    contactCall: "שיחה",
     orderWa: "הזמנה בוואטסאפ",
-    orderEmail: "בירור במייל",
+    orderEmail: "הזמנה במייל",
     waMsg: "שלום! אני מעוניין להזמין את: ",
-    emailSub: "בירור הזמנה: ",
+    emailSub: "בקשת הזמנה: ",
     footer: "© 2026 MM 3D Printing. כל הזכויות שמורות.",
     tbd: "מחיר לפי דרישה",
     fourPack: "מארז רביעייה",
+    sixPack: "מארז 6 יחידות",
+    eightPack: "מארז 8 יחידות",
     pesachSale: "מבצע פסח",
     discountTag: "20% הנחה על הסה״כ",
     saleInfo: "20% הנחה מחושבת על סך ההזמנה",
     catPesach: "פסח",
+    catKitchen: "פתרונות חכמים למטבח",
     catFidget: "צעצועי פידג'ט",
     catKeyrings: "מחזיקי מפתחות",
     catShopping: "אביזרים לקניות",
@@ -307,6 +349,7 @@ const translations = {
 
 const categories = [
   { id: "Pesach", key: "catPesach" },
+  { id: "Kitchen", key: "catKitchen" },
   { id: "Shopping", key: "catShopping" },
   { id: "Keyrings", key: "catKeyrings" },
   { id: "Fidget", key: "catFidget" },
@@ -317,7 +360,14 @@ const categories = [
 ];
 
 const products = [
-  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Pesach", ext: "png" },
+  { nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: "30.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Ultimate Spoon Rest", nameHe: "מחזיק כף מושלם", price: "30.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Minimalist Coaster Set", nameHe: "סט תחתיות מינימליסטי", price: "30.00 - 45.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Lid Storage Rack", nameHe: "מתקן אחסון מכסים", price: "25.00 - 80.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Universal Bottle Opener", nameHe: "פותחן בקבוקים אוניברסלי", price: "25.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Bottle Dryer Rack + Holder", nameHe: "מתקן לייבוש בקבוקים + מחזיק", price: "45.00", cat: "Kitchen", ext: "png", ribbon: "sixPack" },
+  { nameEn: "Cleaning Spray Holder", nameHe: "מחזיק תרסיס ניקוי", price: "25.00", cat: "Kitchen", ext: "png" },
+  { nameEn: "Food Bag Clips", nameHe: "קליפסים לשקיות מזון", price: "30.00", cat: "Kitchen", ext: "png", ribbon: "eightPack" },
   { nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
   { nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: "65.00", cat: "Pesach", ext: "png" },
   { nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: "30.00", cat: "Shopping", ext: "png" },
@@ -356,13 +406,13 @@ function setLanguage(lang) {
   document.body.className = lang === 'he' ? 'rtl' : '';
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-he').classList.toggle('active', lang === 'he');
-  
   document.getElementById('slogan').innerText = translations[lang].slogan;
   document.getElementById('footer-text').innerText = translations[lang].footer;
   
-  document.getElementById('contact-wa').innerText = translations[lang].contactWa;
-  document.getElementById('contact-email').innerText = translations[lang].contactEmail;
-  document.getElementById('contact-call').innerText = translations[lang].contactCall;
+  // Update contact bar labels
+  document.querySelector('#contact-wa .btn-text').innerText = translations[lang].contactWa;
+  document.querySelector('#contact-email .btn-text').innerText = translations[lang].contactEmail;
+  document.querySelector('#contact-call .btn-text').innerText = translations[lang].contactCall;
   
   renderCatalog();
 }
@@ -371,19 +421,19 @@ function renderCatalog() {
   const container = document.getElementById('catalog-container');
   if (!container) return;
   container.innerHTML = '';
-
   const now = new Date();
   const isSaleActive = now < SALE_END_DATE;
 
   categories.forEach(cat => {
-    const catProducts = products.filter(p => p.cat === cat.id);
+    let catProducts = products.filter(p => p.cat === cat.id);
     if (catProducts.length === 0) return;
-
+    
     const section = document.createElement('section');
     section.className = 'category-section';
     
     const isPesachCategory = cat.id === "Pesach";
-    const showSaleInfo = isSaleActive && isPesachCategory;
+    const isKitchenCategory = cat.id === "Kitchen";
+    const showSaleInfo = isSaleActive && (isPesachCategory || isKitchenCategory);
     
     let html = `
       <div class="category-header">
@@ -395,23 +445,26 @@ function renderCatalog() {
     
     catProducts.forEach(product => {
       const name = currentLang === 'en' ? product.nameEn : product.nameHe;
+      const displayPrice = isNaN(parseFloat(product.price)) ? product.price : `₪${product.price}`;
+      let priceHtml = `<span class="product-price">${displayPrice}</span>`;
       
-      let priceHtml = '';
-      if (product.price) {
-        priceHtml = `<span class="product-price">₪${product.price}</span>`;
-      } else {
-        priceHtml = `<span class="product-price">${translations[currentLang].tbd}</span>`;
-      }
-
       const waUrl = "https://wa.me/97226527074?text=" + encodeURIComponent(translations[currentLang].waMsg + name);
       const emailUrl = "mailto:mm3dprinting613@gmail.com?subject=" + encodeURIComponent(translations[currentLang].emailSub + name);
       
-      const imgSrc = "images/" + product.nameEn + "." + (product.ext || "png");
+      let imgLookupName = product.nameEn;
+      if (product.ribbon) {
+          if (imgLookupName === "Food Bag Clips") imgLookupName = "Food Bag Clips (8-Pack)";
+          if (imgLookupName === "Bottle Dryer Rack + Holder") imgLookupName = "Bottle Dryer Rack + Holder (6-Pack)";
+          if (imgLookupName === "Chametz-Free sign") imgLookupName = "Chametz-Free sign (4-Pack)";
+      }
+      
+      const imgSrc = "images/" + imgLookupName + "." + (product.ext || "png");
+      const shouldShowBadge = isSaleActive && (isPesachCategory || isKitchenCategory);
 
       html += `
         <div class="product-card">
           ${product.ribbon ? `<div class="ribbon">${translations[currentLang][product.ribbon]}</div>` : ''}
-          ${(isSaleActive && isPesachCategory) ? `<div class="discount-badge">${translations[currentLang].discountTag}</div>` : ''}
+          ${shouldShowBadge ? `<div class="discount-badge">${translations[currentLang].discountTag}</div>` : ''}
           <div class="product-img-container">
             <img src="${imgSrc}" class="product-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/400?text=${encodeURIComponent(name)}';">
           </div>
@@ -419,14 +472,19 @@ function renderCatalog() {
             <h3 class="product-name">${name}</h3>
             <div class="price-container">${priceHtml}</div>
             <div class="btn-group">
-              <a href="${waUrl}" target="_blank" class="btn btn-whatsapp">${translations[currentLang].orderWa}</a>
-              <a href="${emailUrl}" class="btn btn-email">${translations[currentLang].orderEmail}</a>
+              <a href="${waUrl}" target="_blank" class="btn btn-whatsapp">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                ${translations[currentLang].orderWa}
+              </a>
+              <a href="${emailUrl}" class="btn btn-email">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                ${translations[currentLang].orderEmail}
+              </a>
             </div>
           </div>
         </div>
       `;
     });
-    
     html += '</div>';
     section.innerHTML = html;
     container.appendChild(section);
@@ -436,9 +494,7 @@ function renderCatalog() {
 window.onload = () => {
   setLanguage('en');
   const logo = document.getElementById('main-logo');
-  if (logo && logo.naturalWidth === 0) {
-    showFallbackLogo();
-  }
+  if (logo && logo.naturalWidth === 0) showFallbackLogo();
 };
 </script>
 </body>

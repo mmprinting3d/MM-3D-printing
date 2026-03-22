@@ -7,18 +7,10 @@
 
   <!-- Open Graph / WhatsApp / Facebook Meta Tags -->
   <meta property="og:type" content="website">
-<<<<<<< HEAD
   <meta property="og:url" content="https://mmprinting3d.github.io/MM-3D-Printing/">
   <meta property="og:title" content="MM 3D Printing | Catalog">
   <meta property="og:description" content="Let's make the impossible possible. Check out our 3D printed products and accessories.">
   
-=======
-  <meta property="og:url" content="https://mmprinting3d.github.io/MM-3-D-Printing/">
-  <meta property="og:title" content="MM 3D Printing | Catalog">
-  <meta property="og:description" content="Let's make the impossible possible. Check out our 3D printed products and accessories.">
-  
-  <!-- Image Path: Pointing to your GitHub repo logo -->
->>>>>>> 22ebe304a94d398263b24d4282a95dd7efd5e14a
   <meta property="og:image" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
   <meta property="og:image:secure_url" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
   <meta property="og:image:type" content="image/png">
@@ -416,18 +408,12 @@ function setLanguage(lang) {
   document.getElementById('btn-he').classList.toggle('active', lang === 'he');
   document.getElementById('slogan').innerText = translations[lang].slogan;
   document.getElementById('footer-text').innerText = translations[lang].footer;
-<<<<<<< HEAD
   
   // Update contact bar labels
   document.querySelector('#contact-wa .btn-text').innerText = translations[lang].contactWa;
   document.querySelector('#contact-email .btn-text').innerText = translations[lang].contactEmail;
   document.querySelector('#contact-call .btn-text').innerText = translations[lang].contactCall;
   
-=======
-  document.getElementById('contact-wa').innerText = translations[lang].contactWa;
-  document.getElementById('contact-email').innerText = translations[lang].contactEmail;
-  document.getElementById('contact-call').innerText = translations[lang].contactCall;
->>>>>>> 22ebe304a94d398263b24d4282a95dd7efd5e14a
   renderCatalog();
 }
 
@@ -441,20 +427,14 @@ function renderCatalog() {
   categories.forEach(cat => {
     let catProducts = products.filter(p => p.cat === cat.id);
     if (catProducts.length === 0) return;
-<<<<<<< HEAD
     
-=======
->>>>>>> 22ebe304a94d398263b24d4282a95dd7efd5e14a
     const section = document.createElement('section');
     section.className = 'category-section';
+    
     const isPesachCategory = cat.id === "Pesach";
-<<<<<<< HEAD
     const isKitchenCategory = cat.id === "Kitchen";
     const showSaleInfo = isSaleActive && (isPesachCategory || isKitchenCategory);
     
-=======
-    const showSaleInfo = isSaleActive && isPesachCategory;
->>>>>>> 22ebe304a94d398263b24d4282a95dd7efd5e14a
     let html = `
       <div class="category-header">
         <h2 class="category-title">${translations[currentLang][cat.key]}</h2>
@@ -462,9 +442,9 @@ function renderCatalog() {
       </div>
       <div class="product-grid">
     `;
+    
     catProducts.forEach(product => {
       const name = currentLang === 'en' ? product.nameEn : product.nameHe;
-<<<<<<< HEAD
       const displayPrice = isNaN(parseFloat(product.price)) ? product.price : `₪${product.price}`;
       let priceHtml = `<span class="product-price">${displayPrice}</span>`;
       
@@ -481,12 +461,6 @@ function renderCatalog() {
       const imgSrc = "images/" + imgLookupName + "." + (product.ext || "png");
       const shouldShowBadge = isSaleActive && (isPesachCategory || isKitchenCategory);
 
-=======
-      let priceHtml = product.price ? `<span class="product-price">₪${product.price}</span>` : `<span class="product-price">${translations[currentLang].tbd}</span>`;
-      const waUrl = "https://wa.me/97226527074?text=" + encodeURIComponent(translations[currentLang].waMsg + name);
-      const emailUrl = "mailto:mm3dprinting613@gmail.com?subject=" + encodeURIComponent(translations[currentLang].emailSub + name);
-      const imgSrc = "images/" + product.nameEn + "." + (product.ext || "png");
->>>>>>> 22ebe304a94d398263b24d4282a95dd7efd5e14a
       html += `
         <div class="product-card">
           ${product.ribbon ? `<div class="ribbon">${translations[currentLang][product.ribbon]}</div>` : ''}

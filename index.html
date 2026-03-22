@@ -17,12 +17,6 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
-  <!-- Twitter Card backup -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MM 3D Printing | Catalog">
-  <meta name="twitter:description" content="Let's make the impossible possible. Check out our 3D printed products and accessories.">
-  <meta name="twitter:image" content="https://mmprinting3d.github.io/MM-3D-Printing/images/logo.png">
-
   <!-- Favicon setup -->
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -365,7 +359,7 @@ const products = [
   { nameEn: "Minimalist Coaster Set", nameHe: "סט תחתיות מינימליסטי", price: "30.00 - 45.00", cat: "Kitchen", ext: "png" },
   { nameEn: "Lid Storage Rack", nameHe: "מתקן אחסון מכסים", price: "25.00 - 80.00", cat: "Kitchen", ext: "png" },
   { nameEn: "Universal Bottle Opener", nameHe: "פותחן בקבוקים אוניברסלי", price: "25.00", cat: "Kitchen", ext: "png" },
-  { nameEn: "Bottle Dryer Rack + Holder", nameHe: "מתקן לייבוש בקבוקים + מחזיק", price: "45.00", cat: "Kitchen", ext: "png", ribbon: "sixPack" },
+  { nameEn: "Bottle Dryer Rack + Holder", nameHe: "מתקן לייבוש בקבוקים + מחזיק", price: "50.00", cat: "Kitchen", ext: "png", ribbon: "sixPack" },
   { nameEn: "Cleaning Spray Holder", nameHe: "מחזיק תרסיס ניקוי", price: "25.00", cat: "Kitchen", ext: "png" },
   { nameEn: "Food Bag Clips", nameHe: "קליפסים לשקיות מזון", price: "30.00", cat: "Kitchen", ext: "png", ribbon: "eightPack" },
   { nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", price: "60.00", cat: "Pesach", ext: "jpeg", ribbon: "fourPack" },
@@ -409,7 +403,6 @@ function setLanguage(lang) {
   document.getElementById('slogan').innerText = translations[lang].slogan;
   document.getElementById('footer-text').innerText = translations[lang].footer;
   
-  // Update contact bar labels
   document.querySelector('#contact-wa .btn-text').innerText = translations[lang].contactWa;
   document.querySelector('#contact-email .btn-text').innerText = translations[lang].contactEmail;
   document.querySelector('#contact-call .btn-text').innerText = translations[lang].contactCall;
@@ -451,14 +444,8 @@ function renderCatalog() {
       const waUrl = "https://wa.me/97226527074?text=" + encodeURIComponent(translations[currentLang].waMsg + name);
       const emailUrl = "mailto:mm3dprinting613@gmail.com?subject=" + encodeURIComponent(translations[currentLang].emailSub + name);
       
-      let imgLookupName = product.nameEn;
-      if (product.ribbon) {
-          if (imgLookupName === "Food Bag Clips") imgLookupName = "Food Bag Clips (8-Pack)";
-          if (imgLookupName === "Bottle Dryer Rack + Holder") imgLookupName = "Bottle Dryer Rack + Holder (6-Pack)";
-          if (imgLookupName === "Chametz-Free sign") imgLookupName = "Chametz-Free sign (4-Pack)";
-      }
+      const imgSrc = "images/" + product.nameEn + "." + (product.ext || "png");
       
-      const imgSrc = "images/" + imgLookupName + "." + (product.ext || "png");
       const shouldShowBadge = isSaleActive && (isPesachCategory || isKitchenCategory);
 
       html += `

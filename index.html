@@ -59,10 +59,27 @@
       background: linear-gradient(135deg, #000 33%, #f00 33%, #f00 66%, #ffd700 66%) !important;
     }
 
-    .color-picker-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    /* Redesigned Pack Tag - Straight and Sleek */
+    .pack-tag {
+      position: absolute;
+      top: 12px;
+      left: 0;
+      background: #ef4444;
+      color: white;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      z-index: 20;
+      border-radius: 0 4px 4px 0;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      letter-spacing: 0.02em;
+    }
+
+    body.rtl .pack-tag {
+      left: auto;
+      right: 0;
+      border-radius: 4px 0 0 4px;
     }
 
     ::-webkit-scrollbar {
@@ -71,6 +88,14 @@
     ::-webkit-scrollbar-thumb {
       background: #cbd5e1;
       border-radius: 10px;
+    }
+
+    /* Cleaned up layout for select/quantity */
+    .selection-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: flex-end;
     }
   </style>
 </head>
@@ -150,7 +175,7 @@
   </section>
 </main>
 
-<!-- Cart Sidebar Overlay -->
+<!-- Cart Sidebar -->
 <div id="cart-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex justify-end transition-opacity duration-300">
   <div class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300 translate-x-0">
     <div class="p-6 border-b border-slate-100 flex justify-between items-center">
@@ -183,7 +208,7 @@
           
           <div class="space-y-1">
             <label class="text-xs font-bold text-slate-400 px-1" id="label-phone">PHONE NUMBER</label>
-            <input type="tel" name="Phone" id="cust-phone" placeholder="e.g. 050-1234567" pattern="[0-9\-+ ]{9,15}" class="w-full p-3 bg-slate-100 rounded-xl border-none focus:ring-2 focus:ring-green-500" required>
+            <input type="tel" name="Phone" id="cust-phone" placeholder="e.g. 050-1234567" class="w-full p-3 bg-slate-100 rounded-xl border-none focus:ring-2 focus:ring-green-500" required>
           </div>
 
           <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
@@ -231,12 +256,10 @@
          </div>
          <h2 class="text-2xl font-bold mb-2" id="success-title">Order Received!</h2>
          <p class="text-slate-500 mb-4" id="success-msg">Thank you! We will contact you soon to confirm timing.</p>
-         
          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 w-full mb-8">
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1" id="label-order-num-ui">Order Number</p>
             <p id="display-order-num" class="text-xl font-mono font-bold text-slate-900 tracking-wider">MM-000000</p>
          </div>
-         
          <button onclick="location.reload()" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold transition-all active:scale-95">
            <span id="btn-close">Close</span>
          </button>
@@ -260,8 +283,6 @@
           <span id="btn-place-order">Place Order</span>
         </button>
       </div>
-      
-      <p class="text-[10px] text-slate-400 text-center leading-relaxed" id="disclaimer">Final price includes shipping and materials.</p>
     </div>
   </div>
 </div>
@@ -274,6 +295,11 @@
 let currentLang = 'en';
 let cart = [];
 const FORMSPREE_ID = "xwvwobwp"; 
+
+function isPesachVisible() {
+  const now = new Date();
+  return now.getMonth() < 3; 
+}
 
 const availableColors = [
   { id: "yellow", en: "Yellow", he: "צהוב", hex: "#fbbf24" },
@@ -288,23 +314,57 @@ const availableColors = [
 ];
 
 const products = [
-  { id: 1, nameEn: "Bottle Dryer Rack + Holder", nameHe: "מתקן ייבוש ומחזיק לבקבוקים", descEn: "A heavy-duty rack designed to safely dry bottles and keep your counter organized.", descHe: "מעמד חזק לייבוש בקבוקים ושמירה על סדר במטבח.", price: 50.00, cat: "Kitchen", img: "Bottle Dryer.png" },
-  { id: 2, nameEn: "Cleaning Spray Holder", nameHe: "מחזיק לספריי ניקוי", descEn: "Wall-mountable or cabinet holder for all standard cleaning spray bottles.", descHe: "מחזיק לתלייה על הקיר או בתוך ארון עבור כל סוגי השפריצרים.", price: 25.00, cat: "Kitchen", img: "Spray Holder.png" },
-  { id: 3, nameEn: "Food Bag Clips", nameHe: "תופסנים לשקיות אוכל", descEn: "Pack of durable clips to keep your snacks and ingredients fresh for longer.", descHe: "סט תופסנים עמידים לשמירה על טריות השקיות במזווה.", price: 30.00, cat: "Kitchen", img: "Clips.png" },
-  { id: 4, nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", descEn: "The perfect ventilated home for your favorite smiley sponge.", descHe: "המעמד המושלם והמאוורר לספוג המועדף עליכם.", price: 30.00, cat: "Kitchen", img: "Scrub daddy stand.png" },
-  { id: 5, nameEn: "Ultimate Spoon Rest", nameHe: "מחזיק כף מושלם", descEn: "Heat-resistant and easy to clean, keeping your stove-top mess-free.", descHe: "עמיד בחום וקל לניקוי, שומר על הכיריים נקיות בזמן הבישול.", price: 30.00, cat: "Kitchen", img: "Ultimate Spoon Rest.png" },
-  { id: 6, nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", descEn: "Durable and stylish signage to mark clean rooms during the holiday.", descHe: "שלט מעוצב ועמיד לסימון חדרים שכבר נוקו לפסח.", price: 60.00, cat: "Pesach", img: "Chametz-Free sign.jpeg" },
-  { id: 7, nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", descEn: "Articulated 3D printed dragon that moves smoothly in your hands.", descHe: "דרקון מפרקי מודפס בתלת מימד שנע בצורה חלקה וכיפית בידיים.", price: 30.00, cat: "Fidget", img: "Fidget dragon.png" },
-  { id: 8, nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", descEn: "A beautiful replica of the iconic 770 Eastern Parkway building.", descHe: "העתק מרהיב של בניין ה-770 המפורסם המשמש כקופת צדקה.", price: 77.00, cat: "Tzedakah", img: "770 tzedakah box.png" },
-  { id: 9, nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק למשאבת הזנה אינפיניטי", descEn: "Custom stable mount for secure holding of medical feeding pumps.", descHe: "מתקן ייעודי ויציב לאחיזה בטוחה של משאבת הזנה רפואית.", price: 60.00, cat: "Tools", img: "Infinity Feeding pump holder.png" }
+  { id: 1, nameEn: "Scrub daddy stand", nameHe: "מעמד לספוג Scrub Daddy", price: 30.00, cat: "Kitchen", img: "Scrub daddy stand.png" },
+  { id: 2, nameEn: "Ultimate Spoon Rest", nameHe: "מחזיק כף מושלם", price: 30.00, cat: "Kitchen", img: "Ultimate Spoon Rest.png" },
+  { id: 3, nameEn: "Minimalist Coaster Set", nameHe: "סט תחתיות מינימליסטי", price: 30.00, cat: "Kitchen", img: "Minimalist Coaster Set.png" },
+  { id: 4, nameEn: "Lid Storage Rack", nameHe: "מתקן אחסון מכסים", price: 25.00, cat: "Kitchen", img: "Lid Storage Rack.png" },
+  { id: 5, nameEn: "Universal Bottle Opener", nameHe: "פותחן בקבוקים אוניברסלי", price: 25.00, cat: "Kitchen", img: "Universal Bottle Opener.png" },
+  { id: 6, nameEn: "Bottle Dryer Rack + Holder", nameHe: "מתקן לייבוש בקבוקים + מחזיק", price: 50.00, cat: "Kitchen", img: "Bottle Dryer Rack + Holder.png", packQty: 6 },
+  { id: 7, nameEn: "Cleaning Spray Holder", nameHe: "מחזיק תרסיס ניקוי", price: 25.00, cat: "Kitchen", img: "Cleaning Spray Holder.png" },
+  { id: 8, nameEn: "Food Bag Clips", nameHe: "קליפסים לשקיות מזון", price: 30.00, cat: "Kitchen", img: "Food Bag Clips.png", packQty: 8 },
+  { id: 9, nameEn: "Chametz-Free sign", nameHe: "שלט חדר זה נקי לפסח", price: 60.00, cat: "Pesach", img: "Chametz-Free sign.jpeg", packQty: 4 },
+  { id: 10, nameEn: "Omer calendar", nameHe: "לוח ספירת העומר", price: 65.00, cat: "Pesach", img: "Omer calendar.png" },
+  { id: 11, nameEn: "Bag Handle", nameHe: "ידית נשיאה לשקיות", price: 30.00, cat: "Shopping", img: "Bag Handle.png" },
+  { id: 12, nameEn: "Car Seat Hook", nameHe: "מתלה לרכב", price: 25.00, cat: "Shopping", img: "Car Seat Hook.png" },
+  { id: 13, nameEn: "Shopping Cart Coin + Keychain Case", nameHe: "מחזיק מטבע לעגלת קניות", price: 10.00, cat: "Shopping", img: "Shopping Cart Coin + Keychain Case.png" },
+  { id: 14, nameEn: "Emoji keyring", nameHe: "מחזיק מפתחות אימוג'י", price: 10.00, cat: "Keyrings", img: "Emoji keyring.png" },
+  { id: 15, nameEn: "Gyroscope keyring", nameHe: "מחזיק מפתחות גירוסקופ", price: 20.00, cat: "Keyrings", img: "Gyroscope keyring.png" },
+  { id: 16, nameEn: "cat keyring", nameHe: "מחזיק מפתחות חתול", price: 10.00, cat: "Keyrings", img: "cat keyring.png" },
+  { id: 17, nameEn: "football keyring", nameHe: "מחזיק מפתחות כדורגל", price: 20.00, cat: "Keyrings", img: "football keyring.png" },
+  { id: 18, nameEn: "piano keyring", nameHe: "מחזיק מפתחות פסנתר", price: 15.00, cat: "Keyrings", img: "piano keyring.png" },
+  { id: 19, nameEn: "Fidget dragon", nameHe: "דרקון פידג'ט", price: 30.00, cat: "Fidget", img: "Fidget dragon.png" },
+  { id: 20, nameEn: "Fidget star", nameHe: "כוכב פידג'ט", price: 15.00, cat: "Fidget", img: "Fidget star.png" },
+  { id: 21, nameEn: "Flexi Rex", nameHe: "דינו פידג'ט", price: 15.00, cat: "Fidget", img: "Flexi Rex.png" },
+  { id: 22, nameEn: "Infinity Fidget Cube", nameHe: "קוביית אינסוף", price: 15.00, cat: "Fidget", img: "Infinity Fidget Cube.png" },
+  { id: 23, nameEn: "Beit HaMikdash Tefillin Boxes", nameHe: "בתי תפילין בעיצוב בית המקדש", price: 60.00, cat: "Tefillin", img: "Beit HaMikdash Tefillin Boxes.png" },
+  { id: 24, nameEn: "770 tzedakah box", nameHe: "קופת צדקה 770", price: 77.00, cat: "Tzedakah", img: "770 tzedakah box.png" },
+  { id: 25, nameEn: "Classic tzedakah box", nameHe: "קופת צדקה קלאסית", price: 30.00, cat: "Tzedakah", img: "Classic tzedakah box.png" },
+  { id: 26, nameEn: "Dual color twist Tzedaka box", nameHe: "קופת צדקה טוויסט דו-צבעוני", price: 35.00, cat: "Tzedakah", img: "Dual color twist Tzedaka box.png" },
+  { id: 27, nameEn: "Round wave tzedakah box", nameHe: "קופת צדקה גלית עגולה", price: 50.00, cat: "Tzedakah", img: "Round wave tzedakah box.png" },
+  { id: 28, nameEn: "Tzedakah Box with Sliding lid", nameHe: "קופת צדקה עם מכסה הזזה", price: 30.00, cat: "Tzedakah", img: "Tzedakah Box with Sliding lid.png" },
+  { id: 29, nameEn: "twist tzedaka box", nameHe: "קופת צדקה טוויסט", price: 40.00, cat: "Tzedakah", img: "twist tzedaka box.png" },
+  { id: 30, nameEn: "EU Plug Travel Protection", nameHe: "מגן תקע אירופאי לנסיעות", price: 25.00, cat: "Travel", img: "EU Plug Travel Protection.png" },
+  { id: 31, nameEn: "Earphone case & phone stand", nameHe: "נרתיק לאוזניות ומעמד לטלפון", price: 20.00, cat: "Travel", img: "Earphone case & phone stand.png" },
+  { id: 32, nameEn: "Modular Tie Box with Travel Lid", nameHe: "קופסת עניבות מודולרית", price: 40.00, cat: "Travel", img: "Modular Tie Box with Travel Lid.png" },
+  { id: 33, nameEn: "OralB Toothbrush Head Case", nameHe: "כיסוי לראש מברשת שיניים Oral-B", price: 15.00, cat: "Travel", img: "OralB Toothbrush Head Case.png" },
+  { id: 34, nameEn: "Q-tip - travel box", nameHe: "קופסת מקלוני אוזניים לנסיעה", price: 25.00, cat: "Travel", img: "Q-tip - travel box.png" },
+  { id: 35, nameEn: "Travel cutlery box", nameHe: "קופסת סכו״ם לנסיעות", price: 35.00, cat: "Travel", img: "Travel cutlery box.png" },
+  { id: 36, nameEn: "Universal card case", nameHe: "נרתיק כרטיסים אוניברסלי", price: 30.00, cat: "Travel", img: "Universal card case.png" },
+  { id: 37, nameEn: "Folding Comb", nameHe: "מסרק מתקפל", price: 24.00, cat: "Travel", img: "Folding Comb.png" },
+  { id: 38, nameEn: "Toothbrush Travel Case", nameHe: "נרתיק למברשת שיניים לנסיעה", price: 15.00, cat: "Travel", img: "Toothbrush Travel Case.png" },
+  { id: 39, nameEn: "Infinity Feeding pump holder", nameHe: "מחזיק למשאבת הזנה אינפיניטי", price: 60.00, cat: "Tools", img: "Infinity Feeding pump holder.png" }
 ];
 
-const categories = [
-  { id: "Kitchen", en: "Kitchen & Home", he: "מטבח ובית" },
-  { id: "Pesach", en: "Pesach Specials", he: "מבצעי פסח" },
+const allCategories = [
+  { id: "Kitchen", en: "Smart Kitchen Tools", he: "פתרונות חכמים למטבח" },
+  { id: "Pesach", en: "Pesach", he: "פסח" },
+  { id: "Shopping", en: "Shopping Essentials", he: "אביזרים לקניות" },
+  { id: "Keyrings", en: "Keyrings", he: "מחזיקי מפתחות" },
   { id: "Fidget", en: "Fidget Toys", he: "צעצועי פידג'ט" },
+  { id: "Tefillin", en: "Tefillin Boxes", he: "בתי תפילין" },
   { id: "Tzedakah", en: "Tzedakah Boxes", he: "קופות צדקה" },
-  { id: "Tools", en: "Accessories", he: "אביזרים" }
+  { id: "Travel", en: "Travel Essentials", he: "אביזרים לנוסעים" },
+  { id: "Tools", en: "Tools and Accessories", he: "כלים ואביזרים" }
 ];
 
 const ui = {
@@ -313,8 +373,9 @@ const ui = {
     cart: "Your Order", total: "Total Price:", next: "Checkout", edit: "Edit Items",
     formTitle: "Checkout Details", deliveryLabel: "Delivery Location", empty: "Your cart is empty",
     placeOrder: "Place Order", successTitle: "Order Received!", successMsg: "Thank you! We will contact you soon to confirm timing.",
-    disclaimer: "Final price includes shipping and materials.", footer: "© 2026 MM 3D Printing. All Rights Reserved.",
-    colorLabel: "Select Color", qtyLabel: "Quantity", closeBtn: "Close", orderNum: "Order Number",
+    footer: "© 2026 MM 3D Printing. All Rights Reserved.",
+    colorLabel: "Select Color", qtyLabel: "Qty", closeBtn: "Close", orderNum: "Order Number", 
+    pack: "PACK",
     contact: { title: "Contact Us", subtitle: "Have a question or a custom request? Send us a message!", name: "Full Name", email: "Email Address", msg: "Message", send: "Send Message", successTitle: "Message Sent!", successMsg: "We'll get back to you as soon as possible.", another: "Send another message" },
     labels: { name: "FIRST NAME", family: "FAMILY NAME", phone: "PHONE NUMBER", email: "EMAIL ADDRESS", wa: "Contact me on WhatsApp", delivery: "DELIVERY LOCATION", street: "STREET & HOUSE NUMBER", apt: "APARTMENT / FLOOR" }
   },
@@ -323,8 +384,9 @@ const ui = {
     cart: "ההזמנה שלך", total: "מחיר סופי:", next: "לקופה", edit: "ערוך מוצרים",
     formTitle: "פרטי הזמנה", deliveryLabel: "מיקום למשלוח", empty: "הסל שלך ריק",
     placeOrder: "שלח הזמנה", successTitle: "ההזמנה התקבלה!", successMsg: "תודה! ניצור איתך קשר בהקדם לאישור זמני אספקה.",
-    disclaimer: "המחיר הסופי כולל משלוח וחומרים.", footer: "© 2026 MM 3D Printing. כל הזכויות שמורות.",
-    colorLabel: "בחר צבע", qtyLabel: "כמות", closeBtn: "סגור", orderNum: "מספר הזמנה",
+    footer: "© 2026 MM 3D Printing. כל הזכויות שמורות.",
+    colorLabel: "בחר צבע", qtyLabel: "כמות", closeBtn: "סגור", orderNum: "מספר הזמנה", 
+    pack: "מארז",
     contact: { title: "צור קשר", subtitle: "יש לכם שאלה או בקשה מיוחדת? שלחו לנו הודעה!", name: "שם מלא", email: "אימייל", msg: "הודעה", send: "שלח הודעה", successTitle: "ההודעה נשלחה!", successMsg: "נחזור אליכם בהקדם האפשרי.", another: "שלח הודעה נוספת" },
     labels: { name: "שם פרטי", family: "שם משפחה", phone: "מספר טלפון", email: "כתובת אימייל", wa: "צרו איתי קשר בוואטסאפ", delivery: "מיקום למשלוח", street: "רחוב ומספר בית", apt: "דירה / קומה" }
   }
@@ -341,7 +403,6 @@ function setLanguage(lang) {
   set('btn-next', ui[lang].next);
   set('btn-edit-cart', ui[lang].edit);
   set('form-title', ui[lang].formTitle);
-  set('disclaimer', ui[lang].disclaimer);
   set('footer-text', ui[lang].footer);
   set('btn-place-order', ui[lang].placeOrder);
   set('success-title', ui[lang].successTitle);
@@ -367,7 +428,7 @@ function setLanguage(lang) {
   set('label-apt', ui[lang].labels.apt);
   const deliverySelect = document.getElementById('delivery-select');
   const dTexts = lang === 'he' ? 
-    ["איסוף עצמי (ירושלים)", "הר נוף (+₪15)", "כנפי נשרים, גבעת שאול (+₪20)", "בית וגן, רוממה (+₪30)"] :
+    ["איסוף עצמי (ירושלים)", "הר נוף (+₪15)", "כנפי נשרים (+₪20)", "בית וגן (+₪30)"] :
     ["Self Pickup (Jerusalem)", "Har Nof (+₪15)", "Knaf Nesharim (+₪20)", "Bayit V'Gan (+₪30)"];
   for(let i=0; i<4; i++) deliverySelect.options[i].text = dTexts[i];
   document.getElementById('btn-en').className = `px-4 py-2 rounded-full glass-morphism shadow-sm font-bold text-sm border ${lang==='en'?'bg-slate-900 text-white':'border-slate-200'}`;
@@ -376,10 +437,18 @@ function setLanguage(lang) {
   updateCartUI();
 }
 
+function getPackText(qty) {
+  if (currentLang === 'he') return `${qty}-${ui['he'].pack}`;
+  return `${qty}-${ui['en'].pack}`;
+}
+
 function renderCatalog() {
   const container = document.getElementById('view-catalog');
   container.innerHTML = '';
-  categories.forEach(cat => {
+  const visiblePesach = isPesachVisible();
+  const activeCategories = allCategories.filter(cat => cat.id !== "Pesach" || visiblePesach);
+
+  activeCategories.forEach(cat => {
     const catProds = products.filter(p => p.cat === cat.id);
     if (catProds.length === 0) return;
     const section = document.createElement('div');
@@ -387,12 +456,15 @@ function renderCatalog() {
       <h2 class="text-2xl font-bold mb-6 border-b-2 border-slate-200 pb-2">${currentLang === 'en' ? cat.en : cat.he}</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         ${catProds.map(p => `
-          <div class="product-card group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" onclick="showProduct(${p.id})">
+          <div class="product-card group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative" onclick="showProduct(${p.id})">
+            ${p.packQty ? `<div class="pack-tag">${getPackText(p.packQty)}</div>` : ''}
             <div class="aspect-square bg-slate-100 overflow-hidden relative">
-              <img src="images/${p.img}" alt="${p.nameEn}" class="product-image w-full h-full object-cover transition duration-300" onerror="this.src='https://via.placeholder.com/400?text=${p.nameEn}'">
+              <img src="${p.img}" alt="${p.nameEn}" class="product-image w-full h-full object-cover transition duration-300" onerror="this.src='https://via.placeholder.com/400?text=${p.nameEn}'">
             </div>
             <div class="p-4 flex-grow flex flex-col justify-between">
-              <h3 class="font-bold text-sm md:text-base leading-tight">${currentLang === 'en' ? p.nameEn : p.nameHe}</h3>
+              <div>
+                <h3 class="font-bold text-sm md:text-base leading-tight">${currentLang === 'en' ? p.nameEn : p.nameHe}</h3>
+              </div>
               <p class="text-green-600 font-extrabold mt-2">₪${p.price.toFixed(2)}</p>
             </div>
           </div>
@@ -420,35 +492,35 @@ function showProduct(id) {
   const detail = document.getElementById('product-detail-content');
   const colorOptions = availableColors.map(c => `<option value="${c.id}">${currentLang === 'en' ? c.en : c.he}</option>`).join('');
   detail.innerHTML = `
-    <div class="p-4 md:p-8 bg-slate-50 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-100">
-      <img src="images/${p.img}" class="w-full h-auto rounded-2xl shadow-lg max-h-[400px] object-contain" alt="${p.nameEn}" onerror="this.src='https://via.placeholder.com/600?text=${p.nameEn}'">
+    <div class="p-4 md:p-8 bg-slate-50 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-100 relative">
+      ${p.packQty ? `<div class="pack-tag text-[10px] py-1 px-3 top-6">${getPackText(p.packQty)}</div>` : ''}
+      <img src="${p.img}" class="w-full h-auto rounded-2xl shadow-lg max-h-[400px] object-contain" alt="${p.nameEn}" onerror="this.src='https://via.placeholder.com/600?text=${p.nameEn}'">
     </div>
     <div class="p-8 flex flex-col justify-center bg-white space-y-6">
       <div>
         <span class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1 block">${p.cat}</span>
-        <h2 class="text-3xl font-extrabold mb-2 leading-tight">${currentLang === 'en' ? p.nameEn : p.nameHe}</h2>
-        <p class="text-slate-500">${currentLang === 'en' ? p.descEn : p.descHe}</p>
-        <p class="text-4xl text-green-600 font-black mt-4">₪${p.price.toFixed(2)}</p>
+        <h2 class="text-3xl font-extrabold mb-1 leading-tight">${currentLang === 'en' ? p.nameEn : p.nameHe}</h2>
+        <p class="text-3xl text-green-600 font-black">₪${p.price.toFixed(2)}</p>
       </div>
       
-      <!-- Select Color Row -->
-      <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700">${ui[currentLang].colorLabel}</label>
-        <div class="color-picker-row">
-          <div id="color-preview-circle" class="w-10 h-10 rounded-full border border-slate-200 shadow-sm flex-shrink-0"></div>
-          <select id="selected-color" onchange="updateColorPreview()" class="flex-grow p-3 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-green-500 appearance-none bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e')] bg-no-repeat bg-right-3 pr-10">
-            ${colorOptions}
-          </select>
+      <div class="selection-row">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-500 uppercase">${ui[currentLang].colorLabel}</label>
+          <div class="flex items-center gap-2">
+            <div id="color-preview-circle" class="w-8 h-8 rounded-full border border-slate-200 shadow-sm flex-shrink-0"></div>
+            <select id="selected-color" onchange="updateColorPreview()" class="w-full p-2.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-green-500 appearance-none bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e')] bg-no-repeat bg-right-3 pr-8 text-sm">
+              ${colorOptions}
+            </select>
+          </div>
         </div>
-      </div>
 
-      <!-- Quantity Row -->
-      <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700">${ui[currentLang].qtyLabel}</label>
-        <div class="flex items-center bg-slate-50 rounded-xl border border-slate-200 w-fit p-1">
-          <button onclick="adjustDetailQty(-1)" class="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition"><i class="fas fa-minus text-slate-400"></i></button>
-          <input type="number" id="selected-qty" value="1" min="1" max="99" class="w-12 text-center bg-transparent font-bold outline-none border-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-          <button onclick="adjustDetailQty(1)" class="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition"><i class="fas fa-plus text-slate-400"></i></button>
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-500 uppercase text-center">${ui[currentLang].qtyLabel}</label>
+          <div class="flex items-center bg-slate-50 rounded-xl border border-slate-200 p-1 h-[42px]">
+            <button onclick="adjustDetailQty(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-white rounded-lg transition text-slate-400"><i class="fas fa-minus text-[10px]"></i></button>
+            <input type="number" id="selected-qty" value="1" min="1" max="99" class="w-8 text-center bg-transparent font-bold outline-none border-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+            <button onclick="adjustDetailQty(1)" class="w-8 h-8 flex items-center justify-center hover:bg-white rounded-lg transition text-slate-400"><i class="fas fa-plus text-[10px]"></i></button>
+          </div>
         </div>
       </div>
 
@@ -465,10 +537,8 @@ function showProduct(id) {
 
 function adjustDetailQty(delta) {
   const input = document.getElementById('selected-qty');
-  let val = parseInt(input.value) || 1;
-  val += delta;
-  if (val < 1) val = 1;
-  input.value = val;
+  let val = (parseInt(input.value) || 1) + delta;
+  input.value = Math.max(1, val);
 }
 
 function showCatalog() {
@@ -480,8 +550,7 @@ function addToCart(id, e) {
   if (e) e.stopPropagation();
   const p = products.find(prod => prod.id === id);
   const colorId = document.getElementById('selected-color').value;
-  const qtyInput = document.getElementById('selected-qty');
-  const qty = parseInt(qtyInput.value) || 1;
+  const qty = parseInt(document.getElementById('selected-qty').value) || 1;
   const colorObj = availableColors.find(c => c.id === colorId);
   
   const existing = cart.find(item => item.id === id && item.selectedColorId === colorId);
@@ -497,7 +566,6 @@ function addToCart(id, e) {
       cartId: Date.now() + Math.random()
     });
   }
-  
   updateCartUI();
   toggleCart(true);
 }
@@ -506,17 +574,15 @@ function updateCartUI() {
   const list = document.getElementById('cart-items-list');
   const countDisplay = document.getElementById('cart-count');
   const totalDisplay = document.getElementById('cart-total');
-  const checkoutBtn = document.getElementById('btn-checkout-start');
   const deliverySelect = document.getElementById('delivery-select');
   const fee = parseFloat(deliverySelect.options[deliverySelect.selectedIndex].getAttribute('data-fee')) || 0;
+  
   const isDelivery = deliverySelect.value !== 'pickup';
   document.getElementById('address-container').classList.toggle('hidden', !isDelivery);
-  document.getElementById('cust-street').required = isDelivery;
-  document.getElementById('cust-apt').required = isDelivery;
-
+  
   const totalItemsCount = cart.reduce((sum, item) => sum + item.qty, 0);
   countDisplay.innerText = totalItemsCount;
-  checkoutBtn.disabled = cart.length === 0;
+  document.getElementById('btn-checkout-start').disabled = cart.length === 0;
 
   if (cart.length === 0) {
     list.innerHTML = `<div class="text-center py-20 text-slate-400 font-medium">${ui[currentLang].empty}</div>`;
@@ -526,19 +592,18 @@ function updateCartUI() {
 
   let subtotal = 0;
   list.innerHTML = cart.map((p, idx) => {
-    const itemTotal = p.price * p.qty;
-    subtotal += itemTotal;
+    subtotal += p.price * p.qty;
     const colorName = currentLang === 'en' ? p.selectedColorEn : p.selectedColorHe;
     return `
       <div class="flex items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-100">
         <div class="w-14 h-14 bg-white rounded-lg overflow-hidden border border-slate-200 flex-shrink-0 relative">
-          <img src="images/${p.img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/100'">
+          <img src="${p.img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/100'">
           <span class="absolute top-0 left-0 bg-slate-900 text-white text-[9px] px-1.5 py-0.5 rounded-br-lg font-bold">x${p.qty}</span>
         </div>
         <div class="flex-grow">
           <h4 class="font-bold text-sm text-slate-900 leading-tight">${currentLang === 'en' ? p.nameEn : p.nameHe}</h4>
           <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mt-0.5">${colorName}</p>
-          <p class="text-xs text-green-600 font-bold mt-1">₪${itemTotal.toFixed(2)}</p>
+          <p class="text-xs text-green-600 font-bold mt-1">₪${(p.price * p.qty).toFixed(2)}</p>
         </div>
         <div class="flex flex-col gap-1">
            <button onclick="updateQty(${idx}, 1)" class="w-6 h-6 flex items-center justify-center bg-white border border-slate-200 rounded text-slate-500 hover:bg-slate-50"><i class="fas fa-plus text-[10px]"></i></button>
@@ -549,14 +614,14 @@ function updateCartUI() {
     `;
   }).join('');
 
-  totalDisplay.innerText = `₪${(subtotal + fee).toFixed(2)}`;
-  document.getElementById('hidden-total').value = `₪${(subtotal + fee).toFixed(2)}`;
+  const finalTotal = subtotal + fee;
+  totalDisplay.innerText = `₪${finalTotal.toFixed(2)}`;
+  document.getElementById('hidden-total').value = `₪${finalTotal.toFixed(2)}`;
   document.getElementById('hidden-order-details').value = cart.map(p => `${p.qty}x ${p.nameEn} (${p.selectedColorEn})`).join(', ');
 }
 
 function updateQty(idx, delta) {
-  cart[idx].qty += delta;
-  if (cart[idx].qty < 1) cart[idx].qty = 1;
+  cart[idx].qty = Math.max(1, cart[idx].qty + delta);
   updateCartUI();
 }
 
@@ -573,42 +638,32 @@ function toggleCart(open) {
 }
 
 function switchCartScreen(screen) {
-  const items = document.getElementById('cart-screen-items');
-  const form = document.getElementById('cart-screen-form');
-  const actionsItems = document.getElementById('cart-actions-items');
-  const actionsForm = document.getElementById('cart-actions-form');
-  if (screen === 'form') {
-    items.classList.add('hidden');
-    actionsItems.classList.add('hidden');
-    form.classList.remove('hidden');
-    actionsForm.classList.remove('hidden');
+  const isForm = screen === 'form';
+  document.getElementById('cart-screen-items').classList.toggle('hidden', isForm);
+  document.getElementById('cart-actions-items').classList.toggle('hidden', isForm);
+  document.getElementById('cart-screen-form').classList.toggle('hidden', !isForm);
+  document.getElementById('cart-actions-form').classList.toggle('hidden', !isForm);
+  
+  if (isForm) {
     const date = new Date();
     const orderNum = `MM-${date.toISOString().slice(2, 10).replace(/-/g, '')}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
     document.getElementById('hidden-order-num').value = orderNum;
     document.getElementById('display-order-num').innerText = orderNum;
-  } else {
-    items.classList.remove('hidden');
-    actionsItems.classList.remove('hidden');
-    form.classList.add('hidden');
-    actionsForm.classList.add('hidden');
   }
 }
 
 async function submitOrder() {
   const form = document.getElementById('order-form');
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
-  }
+  if (!form.checkValidity()) { form.reportValidity(); return; }
+  
   const btn = document.getElementById('btn-submit');
-  const originalText = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = `<span class="spinner"></span>`;
-  const formData = new FormData(form);
+  
   try {
     const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
       method: "POST",
-      body: formData,
+      body: new FormData(form),
       headers: { 'Accept': 'application/json' }
     });
     if (response.ok) {
@@ -616,18 +671,42 @@ async function submitOrder() {
       document.getElementById('cart-actions-form').classList.add('hidden');
       document.getElementById('cart-footer').classList.add('hidden');
       document.getElementById('cart-screen-success').classList.remove('hidden');
-      cart = [];
-      updateCartUI();
+      cart = []; updateCartUI();
     } else {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Submission failed");
+      throw new Error("Submission failed");
     }
   } catch (error) {
-    alert("Submission Error: " + error.message + "\n\nNote: If this is your first time using this URL, please check your email for a Formspree activation link.");
+    alert("Error: " + error.message);
     btn.disabled = false;
-    btn.innerHTML = originalText;
+    btn.innerHTML = ui[currentLang].placeOrder;
   }
 }
+
+function resetContactForm() {
+    document.getElementById('contact-form').reset();
+    document.getElementById('contact-form').classList.remove('hidden');
+    document.getElementById('contact-success').classList.add('hidden');
+}
+
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-contact-submit');
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span>`;
+  
+  try {
+    const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: "POST",
+      body: new FormData(this),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      document.getElementById('contact-form').classList.add('hidden');
+      document.getElementById('contact-success').classList.remove('hidden');
+    }
+  } catch (err) { alert(err.message); }
+  finally { btn.disabled = false; btn.innerHTML = ui[currentLang].contact.send; }
+});
 
 setLanguage('en');
 </script>

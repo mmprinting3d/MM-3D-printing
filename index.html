@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MM 3D Printing | Beta Store</title>
+  <title>MM 3D Printing | Store</title>
   
   <!-- Favicon / Site Icons -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://mmprinting3d.github.io/MM-3D-Printing/favicon/favicon-32x32.png">
@@ -174,8 +174,9 @@
            <i class="fas fa-chevron-left"></i> Back to Items
         </button>
         <form id="order-form" class="space-y-3">
-          <input type="hidden" name="_subject" value="New Order from MM 3D Printing Catalog">
+          <input type="hidden" name="_subject" id="order-form-subject" value="New Order from MM 3D Printing">
           <textarea name="Items_Ordered" id="hidden-order-summary" class="hidden"></textarea>
+          <input type="hidden" name="Order_Number" id="hidden-order-number">
           
           <div class="grid grid-cols-2 gap-3">
               <input type="text" name="First_Name" placeholder="First Name" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
@@ -183,12 +184,17 @@
           </div>
           <input type="tel" name="Phone" placeholder="Phone Number" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
           <input type="email" name="Email" placeholder="Email Address" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
-          <select name="Delivery_Choice" id="delivery-select" onchange="updateCartUI()" class="w-full p-3 bg-slate-100 rounded-xl text-sm outline-none">
-            <option value="pickup" data-fee="0">Pickup (Jerusalem)</option>
-            <option value="harnof" data-fee="15">Har Nof (+₪15)</option>
-            <option value="knaf_nesharim" data-fee="20">Kanfei Nesharim (+₪20)</option>
-            <option value="bayit_vagan" data-fee="30">Bayit V'Gan (+₪30)</option>
-          </select>
+          
+          <div class="space-y-3">
+            <select name="Delivery_Choice" id="delivery-select" onchange="handleDeliveryChange()" class="w-full p-3 bg-slate-100 rounded-xl text-sm outline-none font-bold">
+              <option value="pickup" data-fee="0">Pickup (Jerusalem)</option>
+              <option value="harnof" data-fee="15">Har Nof (+₪15)</option>
+              <option value="knaf_nesharim" data-fee="20">Kanfei Nesharim (+₪20)</option>
+              <option value="bayit_vagan" data-fee="30">Bayit V'Gan (+₪30)</option>
+            </select>
+            
+            <input type="text" name="Address" id="address-field" placeholder="Full Address (Street, House No, Apt)" class="hidden w-full p-3 bg-slate-100 rounded-xl text-sm border-2 border-blue-100 focus:border-blue-400 outline-none transition-all">
+          </div>
         </form>
       </div>
     </div>
@@ -224,6 +230,7 @@
 <script>
 let currentLang = 'en';
 let cart = [];
+let currentOrderNumber = '';
 const BASE_IMG_URL = "https://mmprinting3d.github.io/MM-3D-Printing/";
 
 const availableColors = [
@@ -295,6 +302,25 @@ const ui = {
   en: { back: "Back to Catalog", addToCart: "Add to Cart", pack: "PACK", color: "SELECT COLOR:", qty: "QTY" },
   he: { back: "חזרה לקטלוג", addToCart: "הוסף לסל", pack: "מארז", color: "בחר צבע:", qty: "כמות" }
 };
+
+function generateOrderNumber() {
+    return `MM-${Math.floor(10000 + Math.random() * 90000)}`;
+}
+
+function handleDeliveryChange() {
+  const select = document.getElementById('delivery-select');
+  const addrField = document.getElementById('address-field');
+  
+  if (select.value === 'pickup') {
+    addrField.classList.add('hidden');
+    addrField.required = false;
+    addrField.value = '';
+  } else {
+    addrField.classList.remove('hidden');
+    addrField.required = true;
+  }
+  updateCartUI();
+}
 
 function setLanguage(lang) {
   currentLang = lang;
@@ -404,15 +430,25 @@ function showCatalog() {
 function toggleCart() {
   const overlay = document.getElementById('cart-overlay');
   overlay.classList.toggle('hidden');
-  updateCartUI();
+  if(!overlay.classList.contains('hidden')) {
+    updateCartUI();
+  }
 }
 
 function switchCartScreen(screen) {
   if(screen === 'form' && cart.length === 0) return;
+  
+  if(screen === 'form') {
+      currentOrderNumber = generateOrderNumber();
+      document.getElementById('hidden-order-number').value = currentOrderNumber;
+      document.getElementById('order-form-subject').value = `New Order ${currentOrderNumber} from MM 3D Printing`;
+  }
+
   document.getElementById('cart-items-list').classList.toggle('hidden', screen !== 'items');
   document.getElementById('cart-screen-form').classList.toggle('hidden', screen !== 'form');
   document.getElementById('btn-checkout-start').classList.toggle('hidden', screen !== 'items');
   document.getElementById('btn-submit').classList.toggle('hidden', screen !== 'form');
+  updateCartUI();
 }
 
 function addToCart(pid) {
@@ -438,7 +474,7 @@ function getNextTierMessage(totalQty) {
   if (totalQty < 30) return `Add ${30 - totalQty} more items for 15% OFF!`;
   if (totalQty < 50) return `Add ${50 - totalQty} more items for 20% OFF!`;
   if (totalQty < 100) return `Add ${100 - totalQty} more items for 25% OFF!`;
-  return "You have the maximum bulk discount applied!";
+  return "Maximum bulk discount applied!";
 }
 
 function updateCartUI() {
@@ -453,31 +489,36 @@ function updateCartUI() {
   
   const totalItemsQty = cart.reduce((acc, i) => acc + i.qty, 0);
   count.innerText = totalItemsQty;
-  list.innerHTML = cart.length ? '' : '<p class="text-center text-slate-400 py-10">Your cart is empty</p>';
+  
+  if(!list.classList.contains('hidden')) {
+    list.innerHTML = cart.length ? '' : '<p class="text-center text-slate-400 py-10">Your cart is empty</p>';
+  }
   
   let subtotal = 0;
-  let summaryText = "ORDER DETAILS:\n\n";
+  let summaryText = `ORDER NUMBER: ${currentOrderNumber}\n\nDETAILS:\n`;
   
   cart.forEach(item => {
     const rowPrice = item.priceValue * item.qty;
     subtotal += rowPrice;
     summaryText += `- ${item.nameEn} (Color: ${item.color.en}, Qty: ${item.qty}) -> ₪${rowPrice.toFixed(2)}\n`;
     
-    const div = document.createElement('div');
-    div.className = "flex gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100";
-    div.innerHTML = `
-      <img src="${BASE_IMG_URL}${encodeURIComponent(item.img)}" class="w-16 h-16 rounded-xl object-cover">
-      <div class="flex-grow">
-        <h4 class="font-bold text-sm">${currentLang === 'en' ? item.nameEn : item.nameHe}</h4>
-        <div class="text-[10px] text-slate-400 flex items-center gap-1">
-          <div class="w-2 h-2 rounded-full" style="background:${item.color.hex}"></div>
-          ${currentLang === 'en' ? item.color.en : item.color.he} | Qty: ${item.qty}
+    if(!list.classList.contains('hidden')) {
+      const div = document.createElement('div');
+      div.className = "flex gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100";
+      div.innerHTML = `
+        <img src="${BASE_IMG_URL}${encodeURIComponent(item.img)}" class="w-16 h-16 rounded-xl object-cover">
+        <div class="flex-grow">
+          <h4 class="font-bold text-sm">${currentLang === 'en' ? item.nameEn : item.nameHe}</h4>
+          <div class="text-[10px] text-slate-400 flex items-center gap-1">
+            <div class="w-2 h-2 rounded-full" style="background:${item.color.hex}"></div>
+            ${currentLang === 'en' ? item.color.en : item.color.he} | Qty: ${item.qty}
+          </div>
+          <div class="font-black text-sm mt-1">₪${rowPrice.toFixed(2)}</div>
         </div>
-        <div class="font-black text-sm mt-1">₪${rowPrice.toFixed(2)}</div>
-      </div>
-      <button onclick="removeFromCart(${item.cartId})" class="text-slate-300 hover:text-red-500"><i class="fas fa-trash-alt"></i></button>
-    `;
-    list.appendChild(div);
+        <button onclick="removeFromCart(${item.cartId})" class="text-slate-300 hover:text-red-500"><i class="fas fa-trash-alt"></i></button>
+      `;
+      list.appendChild(div);
+    }
   });
   
   const discPercent = calculateDiscount(totalItemsQty);
@@ -497,20 +538,29 @@ function updateCartUI() {
   }
   totalEl.innerText = `₪${finalTotal.toFixed(2)}`;
 
-  if(cart.length > 0) {
+  if(cart.length > 0 && !document.getElementById('cart-screen-form').classList.contains('hidden')) {
+      bulkArea.innerHTML = `
+        <div class="p-3 bg-slate-100 border border-slate-200 rounded-xl text-center">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Order Ref</span>
+          <span class="text-lg font-black text-slate-900">#${currentOrderNumber}</span>
+        </div>
+      `;
+  } else if(cart.length > 0) {
     bulkArea.innerHTML = `
       <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-[11px] text-blue-700 font-medium">
         <i class="fas fa-info-circle mr-1"></i> ${getNextTierMessage(totalItemsQty)}
       </div>
     `;
-  } else {
-    bulkArea.innerHTML = '';
   }
 
   summaryText += `\n------------------\n`;
   summaryText += `Items Subtotal: ₪${subtotal.toFixed(2)}\n`;
   if(discAmount > 0) summaryText += `Bulk Discount (${discPercent*100}%): -₪${discAmount.toFixed(2)}\n`;
   summaryText += `Delivery Choice: ${deliverySelect?.selectedOptions[0].text || 'Pickup'}\n`;
+  
+  const addrValue = document.getElementById('address-field').value;
+  if(addrValue) summaryText += `Address: ${addrValue}\n`;
+  
   summaryText += `TOTAL ORDER: ₪${finalTotal.toFixed(2)}`;
   
   if(hiddenSummary) hiddenSummary.value = summaryText;
@@ -525,6 +575,8 @@ async function submitOrder() {
   const form = document.getElementById('order-form');
   const btn = document.getElementById('btn-submit');
   
+  updateCartUI(); 
+
   if(!form.checkValidity()) {
     form.reportValidity();
     return;
@@ -546,11 +598,19 @@ async function submitOrder() {
       const modal = document.createElement('div');
       modal.className = "fixed inset-0 flex items-center justify-center bg-black/50 z-[200]";
       modal.innerHTML = `
-        <div class="bg-white p-8 rounded-3xl text-center max-w-xs shadow-2xl">
-          <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
-          <h3 class="text-xl font-bold mb-2">Order Confirmed!</h3>
-          <p class="text-slate-500 text-sm mb-6">We've received your order and will contact you soon!</p>
-          <button onclick="location.reload()" class="w-full py-3 bg-slate-900 text-white rounded-xl font-bold">Great!</button>
+        <div class="bg-white p-8 rounded-[2.5rem] text-center max-w-sm shadow-2xl mx-4">
+          <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-check text-3xl"></i>
+          </div>
+          <h3 class="text-2xl font-black mb-2">Order Confirmed!</h3>
+          <p class="text-slate-400 text-sm mb-4">Your reference number is:</p>
+          <div class="bg-slate-50 py-3 rounded-2xl mb-6 border border-slate-100">
+            <span class="text-2xl font-black text-slate-900 tracking-tight">#${currentOrderNumber}</span>
+          </div>
+          <p class="text-slate-500 text-sm mb-8 leading-relaxed">We will contact you shortly to arrange payment and collection.</p>
+          <button onclick="location.reload()" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold">
+            Return to Store
+          </button>
         </div>
       `;
       document.body.appendChild(modal);

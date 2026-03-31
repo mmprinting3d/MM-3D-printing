@@ -59,7 +59,6 @@
       background: linear-gradient(135deg, #000 33%, #f00 33%, #f00 66%, #ffd700 66%) !important;
     }
 
-    /* Redesigned Pack Tag - Straight and Sleek */
     .pack-tag {
       position: absolute;
       top: 12px;
@@ -90,12 +89,27 @@
       border-radius: 10px;
     }
 
-    /* Cleaned up layout for select/quantity */
-    .selection-row {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 12px;
-        align-items: flex-end;
+    .discount-badge {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .progress-bar-bg {
+        height: 6px;
+        width: 100%;
+        background: #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .progress-bar-fill {
+        height: 100%;
+        background: #22c55e;
+        transition: width 0.5s ease-out;
     }
   </style>
 </head>
@@ -184,6 +198,31 @@
     </div>
     
     <div id="cart-content-area" class="flex-grow overflow-y-auto">
+      
+      <!-- Tiered Discount Progress Tracker -->
+      <div id="discount-tracker" class="hidden p-6 bg-slate-50 border-b border-slate-100">
+          <div class="flex justify-between items-center mb-2">
+              <span id="next-discount-text" class="text-xs font-bold text-slate-600 uppercase tracking-wide">Next Level: 15% Off</span>
+              <span id="items-to-go" class="text-[10px] bg-slate-200 px-2 py-0.5 rounded-full font-bold">10 items to go</span>
+          </div>
+          <div class="progress-bar-bg">
+              <div id="discount-progress-fill" class="progress-bar-fill" style="width: 20%"></div>
+          </div>
+      </div>
+
+      <!-- Discount Banner -->
+      <div id="discount-banner" class="hidden bg-green-50 p-4 border-b border-green-100">
+          <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center flex-shrink-0 discount-badge">
+                  <i class="fas fa-percent text-xs"></i>
+              </div>
+              <div>
+                  <p class="text-xs font-bold text-green-800 uppercase tracking-wide" id="discount-banner-title">Bulk Discount Applied!</p>
+                  <p class="text-[11px] text-green-700 font-medium" id="discount-banner-msg">You've unlocked the 10% tier!</p>
+              </div>
+          </div>
+      </div>
+
       <div id="cart-screen-items" class="p-6 space-y-4">
         <div id="cart-items-list" class="space-y-4"></div>
       </div>
@@ -267,9 +306,16 @@
     </div>
     
     <div id="cart-footer" class="p-6 border-t border-slate-100 space-y-4 bg-slate-50">
+      <div id="subtotal-row" class="flex justify-between items-center text-sm font-semibold text-slate-400 hidden">
+        <span id="subtotal-label">Subtotal:</span>
+        <span id="cart-subtotal">₪0.00</span>
+      </div>
       <div class="flex justify-between items-center text-lg font-bold">
         <span id="total-label">Total Price:</span>
-        <span id="cart-total" class="text-green-600">₪0.00</span>
+        <div class="text-right">
+            <span id="cart-total" class="text-green-600">₪0.00</span>
+            <p id="savings-label" class="text-[10px] text-green-500 hidden mt-[-4px] uppercase font-black"></p>
+        </div>
       </div>
       
       <div id="cart-actions-items">
@@ -295,6 +341,14 @@
 let currentLang = 'en';
 let cart = [];
 const FORMSPREE_ID = "xwvwobwp"; 
+
+// Tiered Sale Config
+const DISCOUNT_TIERS = [
+    { threshold: 100, discount: 0.25, labelEn: "25% Platinum Tier!", labelHe: "הנחת פלטינום 25%!" },
+    { threshold: 50, discount: 0.20, labelEn: "20% Gold Tier!", labelHe: "הנחת זהב 20%!" },
+    { threshold: 30, discount: 0.15, labelEn: "15% Silver Tier!", labelHe: "הנחת כסף 15%!" },
+    { threshold: 20, discount: 0.10, labelEn: "10% Starter Tier!", labelHe: "הנחת פתיחה 10%!" }
+];
 
 function isPesachVisible() {
   const now = new Date();
@@ -375,7 +429,8 @@ const ui = {
     placeOrder: "Place Order", successTitle: "Order Received!", successMsg: "Thank you! We will contact you soon to confirm timing.",
     footer: "© 2026 MM 3D Printing. All Rights Reserved.",
     colorLabel: "Select Color", qtyLabel: "Qty", closeBtn: "Close", orderNum: "Order Number", 
-    pack: "PACK",
+    pack: "PACK", subtotal: "Subtotal:", bulkApplied: "Bulk Discount Applied!",
+    savings: "You saved:", nextLevel: "Next Discount:", itemsToGo: "items to go",
     contact: { title: "Contact Us", subtitle: "Have a question or a custom request? Send us a message!", name: "Full Name", email: "Email Address", msg: "Message", send: "Send Message", successTitle: "Message Sent!", successMsg: "We'll get back to you as soon as possible.", another: "Send another message" },
     labels: { name: "FIRST NAME", family: "FAMILY NAME", phone: "PHONE NUMBER", email: "EMAIL ADDRESS", wa: "Contact me on WhatsApp", delivery: "DELIVERY LOCATION", street: "STREET & HOUSE NUMBER", apt: "APARTMENT / FLOOR" }
   },
@@ -386,7 +441,8 @@ const ui = {
     placeOrder: "שלח הזמנה", successTitle: "ההזמנה התקבלה!", successMsg: "תודה! ניצור איתך קשר בהקדם לאישור זמני אספקה.",
     footer: "© 2026 MM 3D Printing. כל הזכויות שמורות.",
     colorLabel: "בחר צבע", qtyLabel: "כמות", closeBtn: "סגור", orderNum: "מספר הזמנה", 
-    pack: "מארז",
+    pack: "מארז", subtotal: "סכום ביניים:", bulkApplied: "הנחת כמות הופעלה!",
+    savings: "חסכת:", nextLevel: "ההנחה הבאה:", itemsToGo: "מוצרים לסף הבא",
     contact: { title: "צור קשר", subtitle: "יש לכם שאלה או בקשה מיוחדת? שלחו לנו הודעה!", name: "שם מלא", email: "אימייל", msg: "הודעה", send: "שלח הודעה", successTitle: "ההודעה נשלחה!", successMsg: "נחזור אליכם בהקדם האפשרי.", another: "שלח הודעה נוספת" },
     labels: { name: "שם פרטי", family: "שם משפחה", phone: "מספר טלפון", email: "כתובת אימייל", wa: "צרו איתי קשר בוואטסאפ", delivery: "מיקום למשלוח", street: "רחוב ומספר בית", apt: "דירה / קומה" }
   }
@@ -400,6 +456,7 @@ function setLanguage(lang) {
   set('btn-back', ui[lang].back);
   set('cart-title', ui[lang].cart);
   set('total-label', ui[lang].total);
+  set('subtotal-label', ui[lang].subtotal);
   set('btn-next', ui[lang].next);
   set('btn-edit-cart', ui[lang].edit);
   set('form-title', ui[lang].formTitle);
@@ -426,6 +483,8 @@ function setLanguage(lang) {
   set('label-delivery', ui[lang].labels.delivery);
   set('label-street', ui[lang].labels.street);
   set('label-apt', ui[lang].labels.apt);
+  set('discount-banner-title', ui[lang].bulkApplied);
+
   const deliverySelect = document.getElementById('delivery-select');
   const dTexts = lang === 'he' ? 
     ["איסוף עצמי (ירושלים)", "הר נוף (+₪15)", "כנפי נשרים (+₪20)", "בית וגן (+₪30)"] :
@@ -503,7 +562,7 @@ function showProduct(id) {
         <p class="text-3xl text-green-600 font-black">₪${p.price.toFixed(2)}</p>
       </div>
       
-      <div class="selection-row">
+      <div class="grid grid-cols-2 gap-4">
         <div class="space-y-1">
           <label class="block text-xs font-bold text-slate-500 uppercase">${ui[currentLang].colorLabel}</label>
           <div class="flex items-center gap-2">
@@ -518,7 +577,7 @@ function showProduct(id) {
           <label class="block text-xs font-bold text-slate-500 uppercase text-center">${ui[currentLang].qtyLabel}</label>
           <div class="flex items-center bg-slate-50 rounded-xl border border-slate-200 p-1 h-[42px]">
             <button onclick="adjustDetailQty(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-white rounded-lg transition text-slate-400"><i class="fas fa-minus text-[10px]"></i></button>
-            <input type="number" id="selected-qty" value="1" min="1" max="99" class="w-8 text-center bg-transparent font-bold outline-none border-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+            <input type="number" id="selected-qty" value="1" min="1" max="99" class="w-8 text-center bg-transparent font-bold outline-none border-none text-sm">
             <button onclick="adjustDetailQty(1)" class="w-8 h-8 flex items-center justify-center hover:bg-white rounded-lg transition text-slate-400"><i class="fas fa-plus text-[10px]"></i></button>
           </div>
         </div>
@@ -574,6 +633,15 @@ function updateCartUI() {
   const list = document.getElementById('cart-items-list');
   const countDisplay = document.getElementById('cart-count');
   const totalDisplay = document.getElementById('cart-total');
+  const subtotalDisplay = document.getElementById('cart-subtotal');
+  const subtotalRow = document.getElementById('subtotal-row');
+  const savingsLabel = document.getElementById('savings-label');
+  const discountBanner = document.getElementById('discount-banner');
+  const discountTracker = document.getElementById('discount-tracker');
+  const nextDiscountText = document.getElementById('next-discount-text');
+  const itemsToGo = document.getElementById('items-to-go');
+  const progressBar = document.getElementById('discount-progress-fill');
+  
   const deliverySelect = document.getElementById('delivery-select');
   const fee = parseFloat(deliverySelect.options[deliverySelect.selectedIndex].getAttribute('data-fee')) || 0;
   
@@ -587,6 +655,10 @@ function updateCartUI() {
   if (cart.length === 0) {
     list.innerHTML = `<div class="text-center py-20 text-slate-400 font-medium">${ui[currentLang].empty}</div>`;
     totalDisplay.innerText = "₪0.00";
+    subtotalRow.classList.add('hidden');
+    savingsLabel.classList.add('hidden');
+    discountBanner.classList.add('hidden');
+    discountTracker.classList.add('hidden');
     return;
   }
 
@@ -614,10 +686,63 @@ function updateCartUI() {
     `;
   }).join('');
 
-  const finalTotal = subtotal + fee;
+  // Tiered Discount Logic
+  let activeTier = null;
+  let nextTier = null;
+
+  for (const tier of DISCOUNT_TIERS) {
+      if (totalItemsCount >= tier.threshold) {
+          activeTier = tier;
+          break;
+      }
+  }
+
+  // Find the next tier for the progress tracker
+  const reversedTiers = [...DISCOUNT_TIERS].reverse();
+  for (const tier of reversedTiers) {
+      if (totalItemsCount < tier.threshold) {
+          nextTier = tier;
+          break;
+      }
+  }
+
+  let discountAmount = 0;
+  if (activeTier) {
+      discountAmount = subtotal * activeTier.discount;
+      discountBanner.classList.remove('hidden');
+      document.getElementById('discount-banner-msg').innerText = currentLang === 'en' ? activeTier.labelEn : activeTier.labelHe;
+      subtotalRow.classList.remove('hidden');
+      savingsLabel.classList.remove('hidden');
+      savingsLabel.innerText = `${ui[currentLang].savings} ₪${discountAmount.toFixed(2)}`;
+  } else {
+      discountBanner.classList.add('hidden');
+      subtotalRow.classList.add('hidden');
+      savingsLabel.classList.add('hidden');
+  }
+
+  // Progress Tracker Logic
+  if (nextTier) {
+      discountTracker.classList.remove('hidden');
+      const diff = nextTier.threshold - totalItemsCount;
+      const prevThreshold = activeTier ? activeTier.threshold : 0;
+      const range = nextTier.threshold - prevThreshold;
+      const progress = ((totalItemsCount - prevThreshold) / range) * 100;
+
+      nextDiscountText.innerText = `${ui[currentLang].nextLevel} ${(nextTier.discount * 100)}%`;
+      itemsToGo.innerText = `${diff} ${ui[currentLang].itemsToGo}`;
+      progressBar.style.width = `${progress}%`;
+  } else {
+      // User hit max tier
+      discountTracker.classList.add('hidden');
+  }
+
+  const finalTotal = (subtotal - discountAmount) + fee;
+  
+  subtotalDisplay.innerText = `₪${subtotal.toFixed(2)}`;
   totalDisplay.innerText = `₪${finalTotal.toFixed(2)}`;
+  
   document.getElementById('hidden-total').value = `₪${finalTotal.toFixed(2)}`;
-  document.getElementById('hidden-order-details').value = cart.map(p => `${p.qty}x ${p.nameEn} (${p.selectedColorEn})`).join(', ');
+  document.getElementById('hidden-order-details').value = cart.map(p => `${p.qty}x ${p.nameEn} (${p.selectedColorEn})`).join(', ') + (activeTier ? ` [TIERED DISCOUNT: ${(activeTier.discount*100)}%]` : '');
 }
 
 function updateQty(idx, delta) {
@@ -670,6 +795,8 @@ async function submitOrder() {
       document.getElementById('cart-screen-form').classList.add('hidden');
       document.getElementById('cart-actions-form').classList.add('hidden');
       document.getElementById('cart-footer').classList.add('hidden');
+      document.getElementById('discount-banner').classList.add('hidden');
+      document.getElementById('discount-tracker').classList.add('hidden');
       document.getElementById('cart-screen-success').classList.remove('hidden');
       cart = []; updateCartUI();
     } else {

@@ -105,6 +105,22 @@
 
     #cart-content-area::-webkit-scrollbar { width: 4px; }
     #cart-content-area::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    
+    /* Custom Checkbox Styling */
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #475569;
+      padding: 12px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+    .checkbox-container:hover { background: #e2e8f0; }
+    .checkbox-container input { width: 18px; height: 18px; cursor: pointer; accent-color: #22c55e; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -182,7 +198,15 @@
               <input type="text" name="First_Name" placeholder="First Name" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
               <input type="text" name="Family_Name" placeholder="Family Name" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
           </div>
-          <input type="tel" name="Phone" placeholder="Phone Number" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
+          
+          <div class="space-y-2">
+            <input type="tel" name="Phone" placeholder="Phone Number" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
+            <label class="checkbox-container">
+              <input type="checkbox" name="Has_WhatsApp" id="wa-check" value="Yes" checked>
+              <span id="wa-text">I have WhatsApp</span>
+            </label>
+          </div>
+
           <input type="email" name="Email" placeholder="Email Address" class="w-full p-3 bg-slate-100 rounded-xl text-sm" required>
           
           <div class="space-y-3">
@@ -193,7 +217,14 @@
               <option value="bayit_vagan" data-fee="30">Bayit V'Gan (+₪30)</option>
             </select>
             
-            <input type="text" name="Address" id="address-field" placeholder="Full Address (Street, House No, Apt)" class="hidden w-full p-3 bg-slate-100 rounded-xl text-sm border-2 border-blue-100 focus:border-blue-400 outline-none transition-all">
+            <div id="address-section" class="hidden space-y-2">
+              <input type="text" name="Street" id="street-field" placeholder="Street" class="w-full p-3 bg-slate-100 rounded-xl text-sm border-2 border-blue-50 focus:border-blue-300 outline-none">
+              <div class="grid grid-cols-3 gap-2">
+                <input type="text" name="Building_No" id="building-field" placeholder="House No." class="p-3 bg-slate-100 rounded-xl text-sm border-2 border-blue-50 focus:border-blue-300 outline-none">
+                <input type="text" name="Apt" id="apt-field" placeholder="Apt." class="p-3 bg-slate-100 rounded-xl text-sm border-2 border-blue-50 focus:border-blue-300 outline-none">
+                <input type="text" name="Floor" id="floor-field" placeholder="Floor" class="p-3 bg-slate-100 rounded-xl text-sm border-2 border-blue-50 focus:border-blue-300 outline-none">
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -299,8 +330,8 @@ const allCategories = [
 ];
 
 const ui = {
-  en: { back: "Back to Catalog", addToCart: "Add to Cart", pack: "PACK", color: "SELECT COLOR:", qty: "QTY" },
-  he: { back: "חזרה לקטלוג", addToCart: "הוסף לסל", pack: "מארז", color: "בחר צבע:", qty: "כמות" }
+  en: { back: "Back to Catalog", addToCart: "Add to Cart", pack: "PACK", color: "SELECT COLOR:", qty: "QTY", wa: "I have WhatsApp" },
+  he: { back: "חזרה לקטלוג", addToCart: "הוסף לסל", pack: "מארז", color: "בחר צבע:", qty: "כמות", wa: "יש לי וואטסאפ" }
 };
 
 function generateOrderNumber() {
@@ -309,15 +340,20 @@ function generateOrderNumber() {
 
 function handleDeliveryChange() {
   const select = document.getElementById('delivery-select');
-  const addrField = document.getElementById('address-field');
+  const addrSection = document.getElementById('address-section');
+  const fields = ['street-field', 'building-field', 'apt-field', 'floor-field'];
   
   if (select.value === 'pickup') {
-    addrField.classList.add('hidden');
-    addrField.required = false;
-    addrField.value = '';
+    addrSection.classList.add('hidden');
+    fields.forEach(f => {
+      document.getElementById(f).required = false;
+      document.getElementById(f).value = '';
+    });
   } else {
-    addrField.classList.remove('hidden');
-    addrField.required = true;
+    addrSection.classList.remove('hidden');
+    fields.forEach(f => {
+      document.getElementById(f).required = true;
+    });
   }
   updateCartUI();
 }
@@ -325,6 +361,7 @@ function handleDeliveryChange() {
 function setLanguage(lang) {
   currentLang = lang;
   document.body.className = lang === 'he' ? 'rtl' : '';
+  document.getElementById('wa-text').innerText = ui[currentLang].wa;
   renderCatalog();
 }
 
@@ -558,9 +595,17 @@ function updateCartUI() {
   if(discAmount > 0) summaryText += `Bulk Discount (${discPercent*100}%): -₪${discAmount.toFixed(2)}\n`;
   summaryText += `Delivery Choice: ${deliverySelect?.selectedOptions[0].text || 'Pickup'}\n`;
   
-  const addrValue = document.getElementById('address-field').value;
-  if(addrValue) summaryText += `Address: ${addrValue}\n`;
+  const street = document.getElementById('street-field').value;
+  const house = document.getElementById('building-field').value;
+  const apt = document.getElementById('apt-field').value;
+  const floor = document.getElementById('floor-field').value;
   
+  if(street) {
+    summaryText += `Address: ${street} ${house}, Apt ${apt}, Floor ${floor}\n`;
+  }
+  
+  const hasWA = document.getElementById('wa-check').checked ? "Yes" : "No";
+  summaryText += `Has WhatsApp: ${hasWA}\n`;
   summaryText += `TOTAL ORDER: ₪${finalTotal.toFixed(2)}`;
   
   if(hiddenSummary) hiddenSummary.value = summaryText;
